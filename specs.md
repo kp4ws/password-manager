@@ -31,8 +31,10 @@
 - Team members should follow this procedure:
 	- Commit and push to your branch regularily
 	- When ready to push to master:
+                - Post notice in the discord then wait 5 minutes.
 		- `git pull origin master`
-		- ``
+		- commit and push to your local branch
+                - Go to the github website and create a pull request.
 
 ## Specifications
 
