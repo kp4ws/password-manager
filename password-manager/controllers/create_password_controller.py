@@ -12,7 +12,7 @@ class CreatePasswordController:
         self.view.tkraise()
 
     def subscribe(self):
-        self.event_system.subscribe(EventChannel.CREATE_PASSWORD_VIEW, self.show_view)
+        self.event_system.subscribe(event=EventChannel.CREATE_PASSWORD_VIEW, callback=self.show_view)
 
     def bind(self):
         pass

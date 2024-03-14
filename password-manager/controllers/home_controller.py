@@ -12,7 +12,10 @@ class HomeController:
         self.view.tkraise()
 
     def subscribe(self):
-        self.event_system.subscribe(EventChannel.HOME_VIEW, self.show_view)
+        self.event_system.subscribe(event=EventChannel.HOME_VIEW, callback=self.show_view)
 
     def bind(self):
-        pass
+        self.view.button_create.config(command=self._handle_create)
+
+    def _handle_create(self):
+        self.event_system.trigger(EventChannel.CREATE_PASSWORD_VIEW)

@@ -12,10 +12,10 @@ class IndexController:
         self.view.tkraise()
 
     def subscribe(self):
-        self.event_system.subscribe(EventChannel.INDEX_VIEW, self.show_view)
+        self.event_system.subscribe(event=EventChannel.INDEX_VIEW, callback=self.show_view)
 
     def bind(self):
-        self.view.enter_btn.config(command=self._handle_enter)
+        self.view.button_enter.config(command=self._handle_enter)
 
     def _handle_enter(self):
         self.event_system.trigger(EventChannel.HOME_VIEW)

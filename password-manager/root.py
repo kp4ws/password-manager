@@ -4,8 +4,8 @@ class Root(Tk):
     '''
     Serves as the root window configuration for the application
     '''
-    WINDOW_WIDTH: int = 1080
-    WINDOW_HEIGHT: int = 640
+    WINDOW_WIDTH: int = 800
+    WINDOW_HEIGHT: int = 500
 
     def __init__(self) -> None:
         super().__init__()
