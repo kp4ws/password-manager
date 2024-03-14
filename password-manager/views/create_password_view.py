@@ -1,7 +1,28 @@
 from tkinter import Frame, Label, font
+from root import Root
 
 class CreatePasswordView(Frame):
-   def __init__(self, root):
+   '''
+    Serves as the View for the create password screen of the application
+
+    METHODS:
+        __init__(self, root)
+
+    ATTRIBUTES:
+        label_header: Label - Header label
+
+    INTERFACE INFO:
+        N/A
+    '''
+    
+   def __init__(self, root: Root) -> None:
+      '''
+        Initializes the object
+        :arg self: Required by python
+        :arg root: Root window of the application
+        :except No exceptions thrown by this method
+        :return None
+        '''
       super().__init__(root)
       self.grid(row=0, column=0, sticky="nsew")
       self.grid_columnconfigure(0, weight=1)

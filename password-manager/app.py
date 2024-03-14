@@ -5,7 +5,15 @@ from events import EventSystem
 from root import Root
 
 def _main() -> None:
+    '''
+    Main entry point of the application.
+    :arg no arguments required by this function
+    :except no exceptions thrown by this function
+    :return None
+    '''
+    #Root Window
     root = Root()
+    #Event System
     event_system = EventSystem()
 
     #Models

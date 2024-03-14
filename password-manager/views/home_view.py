@@ -1,7 +1,36 @@
 from tkinter import Frame, Label, Button, font, Scrollbar, Listbox, END, VERTICAL
+from root import Root
 
 class HomeView(Frame):
-    def __init__(self, root):
+    '''
+    Serves as the View for the index screen of the application
+
+    METHODS:
+        __init__(self, root)
+
+    ATTRIBUTES:
+        label_header: Label - Header label
+        label_saved_passwords: Label - Saved passwords label
+        label_password_details: Label - Password details label
+        label_selected_title: Label - Selected title label
+        listbox_saved_passwords: Listbox - Listbox with saved passwords
+        scrollbar: Scrollbar - Scrollbar associated with the Listbox
+        frame_password_details: Frame - Frame associated with the password details
+        button_create: Button - Create button
+        button_modify: Button - Modify button
+
+    INTERFACE INFO:
+        N/A
+    '''
+
+    def __init__(self, root: Root) -> None:
+        '''
+        Initializes the object
+        :arg self: Required by python
+        :arg root: Root window of the application
+        :except No exceptions thrown by this method
+        :return None
+        '''
         super().__init__(root)
         self.grid(row=0, column=0, sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
