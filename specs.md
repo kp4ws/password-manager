@@ -13,6 +13,7 @@
 		- [User Interface](#user-interface)
 - __[Documentation](#documentation-1)__
 	- [Code Standards](#code-standards)
+		- [Header Comments](#header-comments)
 		- [Variable Formatting](#variable-formatting)
 		- [Classes](#classes)
 		- [Public Methods](#public-methods)
@@ -55,6 +56,23 @@ These standards apply only to Python3 code written for the Password Manager.
 All code in this project should be written using Python's built in type-hinting, as well as Docstrings for documentation.
 
 Doctrings are declared using triple backticks: \``` `doctring` \```
+
+#### Header Comments
+All python files should have a header file with the primary author's name and a brief description of that file's purpose.
+
+- The formatting should match the following:
+
+    ~~~
+    ```
+    Primary Author: Alice Smith
+    Contributor(s): Bob Smith
+
+    Brief description of the files purpose. If there are files that need to be in the same directory they can be mentioned here. 
+
+	Sources:
+	List source URL's here if relevant
+    ```
+    ~~~
 
 #### Variable Formatting
 - _Class Names:_ CapitalCamelCase
