@@ -1,6 +1,8 @@
 from events import EventChannel
 from views import HomeView
 from models import HomeModel
+from tkinter import END
+from domain import Password
 
 class HomeController:
     '''
@@ -12,6 +14,8 @@ class HomeController:
         _subscribe(self)
         _bind(self)
         _handle_create(self)
+        _handle_password_select(self)
+        _update_passwords(self)
 
     ATTRIBUTES:
         view: HomeView - View associated with this Controller
@@ -44,6 +48,7 @@ class HomeController:
         :except No exceptions thrown by this method
         :return None
         '''
+        self._update_passwords()
         self.view.tkraise()
 
     def _subscribe(self) -> None:
@@ -63,6 +68,7 @@ class HomeController:
         :return None
         '''
         self.view.button_create.config(command=self._handle_create)
+        self.view.listbox_saved_passwords.bind("<<ListboxSelect>>", self._handle_password_select)
 
     def _handle_create(self) -> None:
         '''
@@ -72,3 +78,47 @@ class HomeController:
         :return None
         '''
         self.event_system.trigger(EventChannel.CREATE_PASSWORD_VIEW)
+    
+    def _handle_modify(self) -> None:
+        '''
+        Handles pressing the Modify button in the HomeView
+        :arg self: Required by python
+        :except No exceptions thrown by this method
+        :return None
+        '''
+        selection = self.view.listbox_saved_passwords.curselection()
+        if selection:
+            index = selection[0]
+            selected_item = self.view.listbox_saved_passwords.get(index)
+            self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, selected_item)
+
+    def _handle_password_select(self, event) -> None:
+        '''
+        Handles selecting a password from the saved passwords list
+        :arg self: Required by python
+        :arg event: Event associated with the password selection
+        :except No exceptions thrown by this method
+        :return None
+        '''
+        selection = self.view.listbox_saved_passwords.curselection()
+        if selection:
+            index = selection[0]
+            selected_item = self.view.listbox_saved_passwords.get(index)
+            
+            password = self.model.get_password_by_title(selected_item)
+
+            # Update the password details
+            self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
+            self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
+
+
+    def _update_passwords(self) -> None:
+        '''
+        Populates passwords into the saved passwords list
+        :arg self: Required by python
+        :except No exceptions thrown by this method
+        :return None
+        '''
+        passwords = self.model.get_passwords_from_database()
+        for password in passwords:
+            self.view.listbox_saved_passwords.insert(END, password)

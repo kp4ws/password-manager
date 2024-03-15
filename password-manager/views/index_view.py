@@ -7,6 +7,7 @@ class IndexView(Frame):
 
     METHODS:
         __init__(self, root)
+        _create_widgets(self)
 
     ATTRIBUTES:
         label_header: Label - Header label
@@ -28,8 +29,17 @@ class IndexView(Frame):
         self.grid(row=0, column=0, sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
 
+        self._create_widgets()
+    
+    def _create_widgets(self) -> None:
+        '''
+        Create widgets for the view
+        :arg self: Required by python
+        :except No exceptions thrown by this method
+        :return None
+        '''
         font_header = font.Font(family="Helvetica", size=20, weight="bold")
-
+        
         self.label_header = Label(self, text="Manage Your Passwords", font=font_header)
         self.label_header.grid(row=0, column=0, padx=10, pady=(90, 10), sticky="ew")
 
