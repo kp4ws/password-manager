@@ -65,6 +65,8 @@ class Encryption:
                       [input[8], input[9], input[10], input[11]],
                       [input[12], input[13], input[14], input[15]]]
 
+        print("input =", self.input)
+
     def _sub_bytes(self) -> None:
         '''
         Substitutes each byte using the SBOX substitution table
@@ -72,15 +74,11 @@ class Encryption:
         :except No exceptions thrown by this method
         :return None
         '''
-        print("PRE", self.input)
-
         for column in range(0, len(self.input)):
             for index in range(len(self.input[column])):
                 x = int(self.input[column][index][0], 16)
                 y = int(self.input[column][index][1], 16)
                 self.input[column][index] = self.sbox[x][y]
-
-        print(self.input)
 
     def _shift_rows(self) -> None:
         '''
@@ -90,11 +88,41 @@ class Encryption:
             10 11 12 13    ->   11 12 13 10     * 1 shift *
             20 21 22 23         22 23 20 21     * 2 shift *
             30 31 32 33         33 30 31 32     * 3 shift *
+
+        Because the input grid is stored as a list the shift
+        is equivalent to the following:
+            [[00, 10, 20, 30], [01, 11, 21, 31], [02, 12, 22, 32], [03, 13, 23, 33]]
+            [[00, 11, 22, 33], [01, 12, 23, 30], [02, 13, 20, 31], [03, 10, 21, 32]]
+
         :arg self: description
         :except No exceptions thrown by this method
         :return None
         '''
-        pass
+        temp = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        temp[0][0] = self.input[0][0]
+        temp[0][1] = self.input[1][1]
+        temp[0][2] = self.input[2][2]
+        temp[0][3] = self.input[3][3]
+
+        temp[1][0] = self.input[1][0]
+        temp[1][1] = self.input[2][1]
+        temp[1][2] = self.input[3][2]
+        temp[1][3] = self.input[0][3]
+
+        temp[2][0] = self.input[2][0]
+        temp[2][1] = self.input[3][1]
+        temp[2][2] = self.input[0][2]
+        temp[2][3] = self.input[1][3]
+
+        temp[3][0] = self.input[3][0]
+        temp[3][1] = self.input[0][1]
+        temp[3][2] = self.input[1][2]
+        temp[3][3] = self.input[2][3]
+        for col in range(len(temp)):
+            for item in range(0, 4):
+                self.input[col][item] = temp[col][item]
+
+        print(self.input)
 
     def _mix_columns(self) -> None:
         '''
@@ -156,6 +184,8 @@ class Decryption:
         # Where each number is the index if the data was a single list
         self.input = input
 
+        print("input =", self.input)
+
     def _inv_shift_rows(self) -> None:
         '''
         Applies a wrapped around right shift to the bytes
@@ -168,7 +198,31 @@ class Decryption:
         :except No exceptions thrown by this method
         :return None
         '''
-        pass
+        temp = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        temp[0][0] = self.input[0][0]
+        temp[1][1] = self.input[0][1]
+        temp[2][2] = self.input[0][2]
+        temp[3][3] = self.input[0][3]
+
+        temp[1][0] = self.input[1][0]
+        temp[2][1] = self.input[1][1]
+        temp[3][2] = self.input[1][2]
+        temp[0][3] = self.input[1][3]
+
+        temp[2][0] = self.input[2][0]
+        temp[3][1] = self.input[2][1]
+        temp[0][2] = self.input[2][2]
+        temp[1][3] = self.input[2][3]
+
+        temp[3][0] = self.input[3][0]
+        temp[0][1] = self.input[3][1]
+        temp[1][2] = self.input[3][2]
+        temp[2][3] = self.input[3][3]
+        for col in range(len(temp)):
+            for item in range(0, 4):
+                self.input[col][item] = temp[col][item]
+
+        print(self.input)
 
     def _inv_sub_bytes(self) -> None:
         '''
@@ -177,7 +231,7 @@ class Decryption:
         :except NA No exceptions thrown by this method
         :return None
         '''
-        print("PRE", self.input)
+        print("\nPRE _inv_sub_bytes", self.input)
 
         for column in range(0, len(self.input)):
             for index in range(len(self.input[column])):
@@ -213,7 +267,9 @@ class Decryption:
 if __name__ == '__main__':
     cypher_text = Encryption('Jake')
     cypher_text._sub_bytes()
+    cypher_text._shift_rows()
     temp = cypher_text.input
     cipher_text = Decryption(temp)
     cipher_text._inv_sub_bytes()
+    cipher_text._inv_shift_rows()
 
