@@ -7,3 +7,4 @@ class EventChannel(Enum):
     INDEX_VIEW = 1
     HOME_VIEW = 2
     CREATE_PASSWORD_VIEW = 3
+    MODIFY_PASSWORD_VIEW = 4

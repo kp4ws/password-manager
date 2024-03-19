@@ -1,3 +1,4 @@
 from .index_controller import IndexController
 from .home_controller import HomeController 
 from .create_password_controller import CreatePasswordController
+from .modify_password_controller import ModifyPasswordController

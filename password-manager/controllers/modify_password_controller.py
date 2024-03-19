@@ -1,10 +1,10 @@
 from events import EventChannel
-from views import CreatePasswordView
-from models import CreatePasswordModel
+from views import ModifyPasswordView
+from models import ModifyPasswordModel
 
-class CreatePasswordController:
+class ModifyPasswordController:
     '''
-    Serves as the Controller for the CreatePasswordView and CreatePasswordModel
+    Serves as the Controller for the ModifyPasswordView and ModifyPasswordModel
 
     METHODS:
         __init__(self, view, model, event_system)
@@ -13,14 +13,14 @@ class CreatePasswordController:
         _bind(self)
 
     ATTRIBUTES:
-        view: CreatePasswordView - View associated with this Controller
-        model: CreatePasswordModel - Model associated with this Controller
+        view: ModifyPasswordView - View associated with this Controller
+        model: ModifyPasswordModel - Model associated with this Controller
         event_system: EventSystem - Event system of the application
 
     INTERFACE INFO:
         show_view() - Displays the view associated with this controller
     '''
-    def __init__(self, view: CreatePasswordView, model: CreatePasswordView, event_system) -> None:
+    def __init__(self, view: ModifyPasswordView, model: ModifyPasswordModel, event_system) -> None:
         '''
         Initializes the object
         :arg self: Required by python
@@ -36,13 +36,14 @@ class CreatePasswordController:
         self._subscribe()
         self._bind()
 
-    def show_view(self) -> None:
+    def show_view(self, password) -> None:
         '''
         Displays the View for this Controller
         :arg self: Required by python
         :except No exceptions thrown by this method
         :return None
         '''
+        
         self.view.tkraise()
 
     def _subscribe(self) -> None:
@@ -52,7 +53,7 @@ class CreatePasswordController:
         :except No exceptions thrown by this method
         :return None
         '''
-        self.event_system.subscribe(event=EventChannel.CREATE_PASSWORD_VIEW, callback=self.show_view)
+        self.event_system.subscribe(event=EventChannel.MODIFY_PASSWORD_VIEW, callback=self.show_view)
 
     def _bind(self) -> None:
         '''
@@ -61,11 +62,4 @@ class CreatePasswordController:
         :except No exceptions thrown by this method
         :return None
         '''
-        self.view.button_back.config(command=self._handle_back)
-    
-    def _handle_back(self):
-        self.event_system.trigger(EventChannel.HOME_VIEW)
-    
-    def _handle_submit(self):
-        data = {}
         pass

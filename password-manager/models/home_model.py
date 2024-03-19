@@ -28,9 +28,9 @@ class HomeModel:
         '''
         #TODO: retrieve passwords from the database
         self.passwords = [
-            Password("Password 1", "dfadfdsfasdf"),
-            Password("Password 2", "DUDEEE"),
-            Password("Password 3", "123456789"),
+            Password("Password 1", "", "", "dfadfdsfasdf", ""),
+            Password("Password 2", "", "", "DUDEEE", ""),
+            Password("Password 3", "", "", "123456789", ""),
         ]
         return self.passwords
     
