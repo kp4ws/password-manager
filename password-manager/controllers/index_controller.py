@@ -65,7 +65,7 @@ class IndexController:
         '''
         #self.view.button_enter.config(command=self._handle_enter)
         self.view.button_enter.bind("<Button-1>", self._handle_enter)
-        self.view.canvas_game.bind("<KeyPress>", self.move_player)
+        self.view.canvas_game.bind("<KeyPress>", self._player_physics)
 
     def _handle_enter(self, event) -> None:
         '''
@@ -81,28 +81,37 @@ class IndexController:
         self.event_system.trigger(EventChannel.HOME_VIEW)
 
     
-    def move_player(self, event):
+    def _player_physics(self, event) -> None:
         if self.model.get_captcha_completed():
             return
 
-        x, y = 0, 0
+        #Move Player
+        player_x, player_y = 0, 0
         if event.keysym == "Up":
-            y = -20
+            player_y = -30
         elif event.keysym == "Down":
-            y = 20
+            player_y = 30
         elif event.keysym == "Left":
-            x = -20
+            player_x = -30
         elif event.keysym == "Right":
-            x = 20
-        self.view.canvas_game.move(self.view.player, x, y)
+            player_x = 30
 
-        player_coords = self.view.canvas_game.coords(self.view.player)
-        goal_coords = self.view.canvas_game.coords(self.view.goal)
+        self.view.canvas_game.move(self.view.player, player_x, player_y)
 
-        # Check for collision between player and goal
-        if (player_coords[0] < goal_coords[2] and player_coords[2] > goal_coords[0] and
-                player_coords[1] < goal_coords[3] and player_coords[3] > goal_coords[1]):
-                self.view.show_captcha_success()
+
+        #Check for collisions
+        player_bbox = self.view.canvas_game.bbox(self.view.player)
+        flag_bbox = self.view.canvas_game.bbox(self.view.red_flag)
+
+        if player_bbox and flag_bbox:
+            overlapping_items = self.view.canvas_game.find_overlapping(*player_bbox)
+
+            # If collision with flag, captcha is completed
+            if self.view.red_flag in overlapping_items:
+                
+                # Simulate changing red flag to green flag by moving red flag off screen
+                self.view.canvas_game.move(self.view.red_flag, 1000, 1000) 
+
+                self.view.label_captcha.config(text="CAPTCHA Completed", fg="green")
                 self.view.button_enter.config(state="normal")
-                self.view.canvas_game.config(state="disabled")
                 self.model.set_captcha_completed(True)
