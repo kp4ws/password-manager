@@ -1,5 +1,5 @@
 from domain import Password
-
+from encryption import Encryption
 class HomeModel:
     '''
     Serves as the HomeModel for doing business logic associated with the home page
@@ -27,13 +27,19 @@ class HomeModel:
         :return list
         '''
         #TODO: retrieve passwords from the database
-        self.passwords = [
-            Password("Password 1", "", "", "dfadfdsfasdf", ""),
-            Password("Password 2", "", "", "DUDEEE", ""),
-            Password("Password 3", "", "", "123456789", ""),
-        ]
+
+        self.query = 'select encrypted_pass from passwords select title from websites'
+
+        while(rs.next()):
+            Password(rs.getString(1), rs.getString(2)..... encrypt(rs.String(3)))
+            self.passwords.append(Password)
+
+        #Password("Password 1", "", "", "dfadfdsfasdf", ""),
+
+        #decrypt password
+
         return self.passwords
-    
+
     def get_password_by_title(self, title: str) -> str:
         '''
         Retrieve passwords by title from the password list
