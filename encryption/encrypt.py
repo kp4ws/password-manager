@@ -24,7 +24,11 @@ def str_to_hex(input: str):
 
 
 def hex_to_str(input: list):
-    pass
+    result_string = ''
+    for sub_list in input:
+        for item in sub_list:
+            result_string += chr(int(item, 16))
+    return result_string
 
 
 def print_that_input(grid: list) -> None:
@@ -56,8 +60,8 @@ class Encryption(Tables):
                       [input[4], input[5], input[6], input[7]],
                       [input[8], input[9], input[10], input[11]],
                       [input[12], input[13], input[14], input[15]]]
-        print("\nAt Start of Encryption")
-        print_that_input(self.input)
+        # print("\nAt Start of Encryption")
+        # print_that_input(self.input)
 
     def _sub_word(self, word: str) -> str:
         '''
@@ -95,8 +99,9 @@ class Encryption(Tables):
                 x = int(self.input[column][index][0], 16)
                 y = int(self.input[column][index][1], 16)
                 self.input[column][index] = self.sbox[x][y]
-        print("\nAfter _sub_bytes:")
-        print_that_input(self.input)
+
+        # print("\nAfter _sub_bytes:")
+        # print_that_input(self.input)
 
     def _shift_rows(self) -> None:
         '''
@@ -140,8 +145,8 @@ class Encryption(Tables):
             for item in range(0, 4):
                 self.input[col][item] = temp[col][item]
 
-        print("\nAfter _shift_rows:")
-        print_that_input(self.input)
+        # print("\nAfter _shift_rows:")
+        # print_that_input(self.input)
 
     def _mix_columns(self) -> None:
         '''
@@ -187,11 +192,18 @@ class Encryption(Tables):
 
         self.input = [['0' + index[2:] if len(index[2:]) < 2 else index[2:] for index in each] for each in temp_input]
 
-        print("\nAfter _mix_columns:")
-        print_that_input(self.input)
+        # print("\nAfter _mix_columns:")
+        # print_that_input(self.input)
 
     def key_expansion(self, key: list, ky: int) -> None:
-
+        '''
+        This method is the same for Encrypt and Decrypt classes
+        Expand the cipher key to be 44 bytes long
+        :arg key: Required by python
+        :arg ky: not sure what this is for ATM
+        :except No exceptions thrown by this method
+        :return None
+        '''
         pass
 
     def _add_round_key(self) -> None:
@@ -232,8 +244,8 @@ class Decryption(Tables):
         # Where each number is the index if the data was a single list
 
         self.input = [[index for index in each] for each in input]
-        print("\nAt start of Decryption:")
-        print_that_input(self.input)
+        # print("\nAt start of Decryption:")
+        # print_that_input(self.input)
 
     def _sub_word(self, word: str) -> str:
         '''
@@ -294,8 +306,9 @@ class Decryption(Tables):
         for col in range(len(temp)):
             for item in range(0, 4):
                 self.input[col][item] = temp[col][item]
-        print("\nAfter _inv_shift_rows:")
-        print_that_input(self.input)
+
+        # print("\nAfter _inv_shift_rows:")
+        # print_that_input(self.input)
 
     def _inv_sub_bytes(self) -> None:
         '''
@@ -310,8 +323,9 @@ class Decryption(Tables):
                 x = int(self.input[column][index][0], 16)
                 y = int(self.input[column][index][1], 16)
                 self.input[column][index] = self.inverse_sbox[x][y]
-        print("\nAfter _inv_sub_bytes:")
-        print_that_input(self.input)
+
+        # print("\nAfter _inv_sub_bytes:")
+        # print_that_input(self.input)
 
     def _inv_mix_columns(self) -> None:
         '''
@@ -321,8 +335,6 @@ class Decryption(Tables):
         :except No exceptions thrown by this method
         :return None
         '''
-        print("\nAt Start of _inv_mix_columns:")
-        print_that_input(self.input)
 
         temp_input = [['00', '00', '00', '00'],
                       ['00', '00', '00', '00'],
@@ -364,8 +376,8 @@ class Decryption(Tables):
 
         self.input = [['0' + index[2:] if len(index[2:]) < 2 else index[2:] for index in each] for each in temp_input]
 
-        print("\nAfter _inv_mix_columns:")
-        print_that_input(self.input)
+        # print("\nAfter _inv_mix_columns:")
+        # print_that_input(self.input)
 
     def _add_round_key(self) -> None:
         '''
@@ -381,7 +393,8 @@ class Decryption(Tables):
         self._inv_shift_rows()
         self._inv_sub_bytes()
         # Add round key
-        return self.input
+        str_value = hex_to_str(self.input)
+        return str_value
 
 
 if __name__ == '__main__':
@@ -389,9 +402,9 @@ if __name__ == '__main__':
     encrypted = encrypt_imp.apply_cipher()
     decrypt_imp = Decryption(encrypted)
     original = decrypt_imp.apply_cipher()
-    rotated_word = encrypt_imp._rot_word(['01', '02', '03', '04'])
-    print(rotated_word)
-    substituted_word = encrypt_imp._sub_word(rotated_word)
-    print(substituted_word)
+    # rotated_word = encrypt_imp._rot_word(['01', '02', '03', '04'])
+    # print(rotated_word)
+    # substituted_word = encrypt_imp._sub_word(rotated_word)
+    # print(substituted_word)
 
 
