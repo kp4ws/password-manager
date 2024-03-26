@@ -9,6 +9,8 @@ Sources:
 https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
 '''
 
+from tables import Tables
+
 
 def str_to_hex(input: str):
     hex_val = [hex(ord(character))[2:] for character in input]
@@ -22,10 +24,21 @@ def str_to_hex(input: str):
 
 
 def hex_to_str(input: list):
-    pass
+    result_string = ''
+    for sub_list in input:
+        for item in sub_list:
+            result_string += chr(int(item, 16))
+    return result_string
 
 
-class Encryption:
+def print_that_input(grid: list) -> None:
+    print(grid[0][0], grid[1][0], grid[2][0], grid[3][0])
+    print(grid[0][1], grid[1][1], grid[2][1], grid[3][1])
+    print(grid[0][2], grid[1][2], grid[2][2], grid[3][2])
+    print(grid[0][3], grid[1][3], grid[2][3], grid[3][3])
+
+
+class Encryption(Tables):
     '''
     Implements AES to encrypt passwords for storage in database
     METHODS:
@@ -36,24 +49,7 @@ class Encryption:
     '''
 
     def __init__(self, input: str) -> None:
-        self.sbox = [
-            ['63', '7c', '77', '7b', 'f2', '6b', '6f', 'c5', '30', '01', '67', '2b', 'fe', 'd7', 'ab', '76'],
-            ['ca', '82', 'c9', '7d', 'fa', '59', '47', 'f0', 'ad', 'd4', 'a2', 'af', '9c', 'a4', '72', 'c0'],
-            ['b7', 'fd', '93', '26', '36', '3f', 'f7', 'cc', '34', 'a5', 'e5', 'f1', '71', 'd8', '31', '15'],
-            ['04', 'c7', '23', 'c3', '18', '96', '05', '9a', '07', '12', '80', 'e2', 'eb', '27', 'b2', '75'],
-            ['09', '83', '2c', '1a', '1b', '6e', '5a', 'a0', '52', '3b', 'd6', 'b3', '29', 'e3', '2f', '84'],
-            ['53', 'd1', '00', 'ed', '20', 'fc', 'b1', '5b', '6a', 'cb', 'be', '39', '4a', '4c', '58', 'cf'],
-            ['d0', 'ef', 'aa', 'fb', '43', '4d', '33', '85', '45', 'f9', '02', '7f', '50', '3c', '9f', 'a8'],
-            ['51', 'a3', '40', '8f', '92', '9d', '38', 'f5', 'bc', 'b6', 'da', '21', '10', 'ff', 'f3', 'd2'],
-            ['cd', '0c', '13', 'ec', '5f', '97', '44', '17', 'c4', 'a7', '7e', '3d', '64', '5d', '19', '73'],
-            ['60', '81', '4f', 'dc', '22', '2a', '90', '88', '46', 'ee', 'b8', '14', 'de', '5e', '0b', 'db'],
-            ['e0', '32', '3a', '0a', '49', '06', '24', '5c', 'c2', 'd3', 'ac', '62', '91', '95', 'e4', '79'],
-            ['e7', 'c8', '37', '6d', '8d', 'd5', '4e', 'a9', '6c', '56', 'f4', 'ea', '65', '7a', 'ae', '08'],
-            ['ba', '78', '25', '2e', '1c', 'a6', 'b4', 'c6', 'e8', 'dd', '74', '1f', '4b', 'bd', '8b', '8a'],
-            ['70', '3e', 'b5', '66', '48', '03', 'f6', '0e', '61', '35', '57', 'b9', '86', 'c1', '1d', '9e'],
-            ['e1', 'f8', '98', '11', '69', 'd9', '8e', '94', '9b', '1e', '87', 'e9', 'ce', '55', '28', 'df'],
-            ['8c', 'a1', '89', '0d', 'bf', 'e6', '42', '68', '41', '99', '2d', '0f', 'b0', '54', 'bb', '16']]
-
+        super().__init__()
         input = str_to_hex(input)
         # Each sublist in input is a COLUMN of the input so the input actually looks like:
         #    [0]  [4]  [8]   [12]
@@ -64,8 +60,32 @@ class Encryption:
                       [input[4], input[5], input[6], input[7]],
                       [input[8], input[9], input[10], input[11]],
                       [input[12], input[13], input[14], input[15]]]
+        # print("\nAt Start of Encryption")
+        # print_that_input(self.input)
 
-        print("input =", self.input)
+    def _sub_word(self, word: str) -> str:
+        '''
+        Takes a four byte input word and substitutes each byte using the s-box
+        :param word: A 4-byte input string (in hexadecimal)
+        :return: word after substituting bytes using s-box
+        '''
+        for each in range(0, len(word)):
+            x = int(word[each][0], 16)
+            y = int(word[each][1], 16)
+            word[each] = self.sbox[x][y]
+        return word
+
+    def _rot_word(self, word: list) -> list:
+        '''
+        Takes a four byte input word and performs a left rotation of one position.
+        Word at intake:       [b0, b1, b2, b3]
+        Word after Rotation:  [b1, b2, b3, b0]
+        :param word: A 4-byte input string (in hexadecimal)
+        :return: word after rotation
+        '''
+        temp = word.pop(0)
+        word.append(temp)
+        return word
 
     def _sub_bytes(self) -> None:
         '''
@@ -79,6 +99,9 @@ class Encryption:
                 x = int(self.input[column][index][0], 16)
                 y = int(self.input[column][index][1], 16)
                 self.input[column][index] = self.sbox[x][y]
+
+        # print("\nAfter _sub_bytes:")
+        # print_that_input(self.input)
 
     def _shift_rows(self) -> None:
         '''
@@ -122,13 +145,62 @@ class Encryption:
             for item in range(0, 4):
                 self.input[col][item] = temp[col][item]
 
-        print(self.input)
+        # print("\nAfter _shift_rows:")
+        # print_that_input(self.input)
 
     def _mix_columns(self) -> None:
         '''
         Treats each column as a four term polynomial and multiplied
         modulo x^4+1 with a(x) = {03}x^3+{01}x^2+{01}x+{02}
+        This function is represented by mds_matrix:
+            2  3  1  1
+            1  2  3  1
+            1  1  2  3
+            3  1  1  2
         :arg self: Required by python
+        :except No exceptions thrown by this method
+        :return None
+        '''
+        temp_input = [['00', '00', '00', '00'],
+                      ['00', '00', '00', '00'],
+                      ['00', '00', '00', '00'],
+                      ['00', '00', '00', '00']]
+        mds_matrix = [[2, 3, 1, 1],
+                      [1, 2, 3, 1],
+                      [1, 1, 2, 3],
+                      [3, 1, 1, 2]]
+
+        for column in range(0, len(self.input)):
+            for row in range(0, len(self.input[column])):
+                temp_hex = int('00', 16)
+                for index in range(0, len(self.input[column])):
+                    c = int(self.input[column][index][0], 16)
+                    r = int(self.input[column][index][1], 16)
+
+                    temp_value = 0
+                    if mds_matrix[row][index] == 1:
+                        temp_value = int(self.input[column][index], 16)
+                    elif mds_matrix[row][index] == 2:
+                        temp_value = int(self.multi_2[c][r], 16)
+                    elif mds_matrix[row][index] == 3:
+                        temp_value = int(self.multi_3[c][r], 16)
+
+                    temp_hex = temp_hex ^ temp_value
+                    # print("  ", temp_input[column][row], "XOR", hex(temp_value), "=", hex(temp_hex))
+                temp_input[column][row] = hex(temp_hex)
+                # print("    temp_input[", column, "][", row, "] =", temp_hex)
+
+        self.input = [['0' + index[2:] if len(index[2:]) < 2 else index[2:] for index in each] for each in temp_input]
+
+        # print("\nAfter _mix_columns:")
+        # print_that_input(self.input)
+
+    def key_expansion(self, key: list, ky: int) -> None:
+        '''
+        This method is the same for Encrypt and Decrypt classes
+        Expand the cipher key to be 44 bytes long
+        :arg key: Required by python
+        :arg ky: not sure what this is for ATM
         :except No exceptions thrown by this method
         :return None
         '''
@@ -144,10 +216,14 @@ class Encryption:
         pass
 
     def apply_cipher(self) -> str:
-        pass
+        self._sub_bytes()
+        self._shift_rows()
+        self._mix_columns()
+        # Add round key
+        return self.input
 
 
-class Decryption:
+class Decryption(Tables):
     '''
     Implements inverse AES to decrypt passwords for storage in database
     METHODS:
@@ -158,23 +234,7 @@ class Decryption:
     '''
 
     def __init__(self, input: list) -> None:
-        self.inverse_sbox = [
-            ['52', '09', '6a', 'd5', '30', '36', 'a5', '38', 'bf', '40', 'a3', '9e', '81', 'f3', 'd7', 'fb'],
-            ['7c', 'e3', '39', '82', '9b', '2f', 'ff', '87', '34', '8e', '43', '44', 'c4', 'de', '39', 'cb'],
-            ['54', '7b', '94', '32', 'a6', 'c2', '23', '3d', 'ee', '4c', '95', '0b', '42', 'fa', 'c3', '4e'],
-            ['08', '2e', 'a1', '66', '28', 'd9', '24', 'b2', '76', '5b', 'a2', '49', '6d', '8b', 'd1', '25'],
-            ['72', 'f8', 'f6', '64', '86', '68', '98', '16', 'd4', 'a4', '5c', 'cc', '5d', '65', 'b6', '92'],
-            ['6c', '70', '48', '50', 'fd', 'ed', 'b9', 'da', '5e', '15', '46', '57', 'a7', '8d', '9d', '84'],
-            ['90', 'd8', 'ab', '00', '8c', 'bc', 'd3', '0a', 'f7', '34', '58', '05', 'b8', 'b3', '45', '06'],
-            ['d0', '2c', '1e', '8f', 'ca', '3f', '0f', '02', 'c1', 'af', 'bd', '03', '01', '13', '8a', '6b'],
-            ['3a', '91', '11', '41', '4f', '67', 'dc', 'ea', '97', '72', 'cf', 'ce', 'f0', 'b4', 'e6', '73'],
-            ['96', 'ac', '74', '22', '37', 'ad', '35', '85', 'e2', 'f9', '37', 'e8', '1c', '75', 'df', '6e'],
-            ['47', 'f1', '1a', '71', '1d', '29', 'c5', '89', '6f', 'b7', '62', '0e', 'aa', '18', 'b3', '1b'],
-            ['fc', '56', '3e', '4b', 'c6', 'd2', '79', '20', '9a', 'db', 'c0', 'fe', '78', 'cd', '5a', 'f4'],
-            ['1f', 'dd', 'a8', '33', '88', '07', 'c7', '31', 'b1', '12', '10', '59', '27', '80', 'ec', '5f'],
-            ['60', '51', '7f', 'a9', '19', 'b5', '4a', '0d', '2d', 'e5', '7a', '9f', '93', 'c9', '9c', 'ef'],
-            ['a0', 'e0', '3b', '4d', 'ae', '2a', 'f5', 'b0', 'c8', 'eb', 'bb', '3c', '83', '53', '99', '61'],
-            ['17', '2b', '04', '7e', 'ba', '77', 'd6', '26', 'e1', '69', '14', '63', '55', '21', '0c', '7d']]
+        super().__init__()
 
         # Input is received as a list of lists in the format:
         #    [0][0]  [1][0]  [2][0]  [3][0]
@@ -182,9 +242,34 @@ class Decryption:
         #    [0][2]  [1][2]  [2][2]  [3][2]
         #    [0][3]  [1][3]  [2][3]  [3][3]
         # Where each number is the index if the data was a single list
-        self.input = input
 
-        print("input =", self.input)
+        self.input = [[index for index in each] for each in input]
+        # print("\nAt start of Decryption:")
+        # print_that_input(self.input)
+
+    def _sub_word(self, word: str) -> str:
+        '''
+        Takes a four byte input word and substitutes each byte using the s-box
+        :param word: A 4-byte input string (in hexadecimal)
+        :return: word after substituting bytes using s-box
+        '''
+        for each in range(0, len(word)):
+            x = int(word[each][0], 16)
+            y = int(word[each][1], 16)
+            word[each] = self.sbox[x][y]
+        return word
+
+    def _rot_word(self, word: list) -> list:
+        '''
+        Takes a four byte input word and performs a left rotation of one position.
+        Word at intake:       [b0, b1, b2, b3]
+        Word after Rotation:  [b1, b2, b3, b0]
+        :param word: A 4-byte input string (in hexadecimal)
+        :return: word after rotation
+        '''
+        temp = word.pop(0)
+        word.append(temp)
+        return word
 
     def _inv_shift_rows(self) -> None:
         '''
@@ -222,7 +307,8 @@ class Decryption:
             for item in range(0, 4):
                 self.input[col][item] = temp[col][item]
 
-        print(self.input)
+        # print("\nAfter _inv_shift_rows:")
+        # print_that_input(self.input)
 
     def _inv_sub_bytes(self) -> None:
         '''
@@ -231,7 +317,6 @@ class Decryption:
         :except NA No exceptions thrown by this method
         :return None
         '''
-        print("\nPRE _inv_sub_bytes", self.input)
 
         for column in range(0, len(self.input)):
             for index in range(len(self.input[column])):
@@ -239,7 +324,8 @@ class Decryption:
                 y = int(self.input[column][index][1], 16)
                 self.input[column][index] = self.inverse_sbox[x][y]
 
-        print(self.input)
+        # print("\nAfter _inv_sub_bytes:")
+        # print_that_input(self.input)
 
     def _inv_mix_columns(self) -> None:
         '''
@@ -249,7 +335,49 @@ class Decryption:
         :except No exceptions thrown by this method
         :return None
         '''
-        pass
+
+        temp_input = [['00', '00', '00', '00'],
+                      ['00', '00', '00', '00'],
+                      ['00', '00', '00', '00'],
+                      ['00', '00', '00', '00']]
+
+        mds_matrix = [['0e', '0b', '0d', '09'],
+                      ['09', '0e', '0b', '0d'],
+                      ['0d', '09', '0e', '0b'],
+                      ['0b', '0d', '09', '0e']]
+
+        for column in range(0, len(self.input)):
+            for row in range(0, len(self.input[column])):
+                temp_hex = int('00', 16)
+                for index in range(0, len(self.input[column])):
+                    c = int(self.input[column][index][0], 16)
+                    r = int(self.input[column][index][1], 16)
+
+                    temp_value = 0
+                    if mds_matrix[row][index] == '01':
+                        temp_value = int(self.input[column][index], 16)
+                    elif mds_matrix[row][index] == '02':
+                        temp_value = int(self.multi_2[c][r], 16)
+                    elif mds_matrix[row][index] == '03':
+                        temp_value = int(self.multi_3[c][r], 16)
+                    elif mds_matrix[row][index] == '09':
+                        temp_value = int(self.multi_9[c][r], 16)
+                    elif mds_matrix[row][index] == '0b':
+                        temp_value = int(self.multi_b[c][r], 16)
+                    elif mds_matrix[row][index] == '0d':
+                        temp_value = int(self.multi_d[c][r], 16)
+                    elif mds_matrix[row][index] == '0e':
+                        temp_value = int(self.multi_e[c][r], 16)
+
+                    temp_hex = temp_hex ^ temp_value
+                    # print("  ", temp_input[column][row], "XOR", hex(temp_value), "=", hex(temp_hex))
+                temp_input[column][row] = hex(temp_hex)
+                # print("    temp_input[", column, "][", row, "] =", temp_hex)
+
+        self.input = [['0' + index[2:] if len(index[2:]) < 2 else index[2:] for index in each] for each in temp_input]
+
+        # print("\nAfter _inv_mix_columns:")
+        # print_that_input(self.input)
 
     def _add_round_key(self) -> None:
         '''
@@ -261,15 +389,20 @@ class Decryption:
         pass
 
     def apply_cipher(self) -> str:
-        pass
+        self._inv_mix_columns()
+        self._inv_shift_rows()
+        self._inv_sub_bytes()
+        # Add round key
+        str_value = hex_to_str(self.input)
+        return str_value
 
 
 if __name__ == '__main__':
-    cypher_text = Encryption('Jake')
-    cypher_text._sub_bytes()
-    cypher_text._shift_rows()
-    temp = cypher_text.input
-    cipher_text = Decryption(temp)
-    cipher_text._inv_sub_bytes()
-    cipher_text._inv_shift_rows()
-
+    encrypt_imp = Encryption('Ô¿]0à´R®¸A      ')
+    encrypted = encrypt_imp.apply_cipher()
+    decrypt_imp = Decryption(encrypted)
+    original = decrypt_imp.apply_cipher()
+    # rotated_word = encrypt_imp._rot_word(['01', '02', '03', '04'])
+    # print(rotated_word)
+    # substituted_word = encrypt_imp._sub_word(rotated_word)
+    # print(substituted_word)
