@@ -1,6 +1,7 @@
 from domain import Password
 from database import connect
 import mysql.connector
+from encryption import Decryption
 
 class HomeModel:
     '''
@@ -44,8 +45,15 @@ class HomeModel:
                 username = row[2]
                 encrypted_pass = row[3]
                 date_created = row[4]
-                
-                password = Password(website_title, url, username, encrypted_pass, date_created)
+
+                print(encrypted_pass)
+
+                decryption = Decryption(encrypted_pass)
+                decrypted_pass = decryption.apply_cipher()
+
+                print(decrypted_pass)
+
+                password = Password(website_title, url, username, decrypted_pass, date_created)
                 self.passwords.append(password)
 
         except mysql.connector.Error as error:

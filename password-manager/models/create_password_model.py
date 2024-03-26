@@ -1,7 +1,7 @@
 from domain import Password
-from encryption import Encryption
 from database import connect
 import mysql.connector
+from encryption import Encryption
 
 class CreatePasswordModel:
     def __init__(self):
@@ -13,11 +13,13 @@ class CreatePasswordModel:
         website_title = password.get_title()
         url = password.get_url()
         username = password.get_username()
-        encrypted_pass = password.get_password()
-        #TODO: encrypted_pass = encrypt(password)
-        date_created = password.get_created_date()
+        _password = password.get_password()
+        encryption = Encryption(_password)
+        encrypted_pass = encryption.apply_cipher()
         
-        print(username)
+        print(encrypted_pass)
+        
+        date_created = password.get_created_date()
 
         try:
             # Connect to DB, set cursor
