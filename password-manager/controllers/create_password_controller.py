@@ -1,6 +1,8 @@
 from events import EventChannel
 from views import CreatePasswordView
 from models import CreatePasswordModel
+from datetime import datetime
+from domain import Password
 
 class CreatePasswordController:
     '''
@@ -61,11 +63,34 @@ class CreatePasswordController:
         :except No exceptions thrown by this method
         :return None
         '''
+        self.view.button_clear.config(command=self._handle_clear)
         self.view.button_back.config(command=self._handle_back)
+        self.view.button_submit.config(command=self._handle_submit)
     
+    def _handle_clear(self):
+        self.view.var_title.set("")
+        self.view.var_url.set("")
+        self.view.var_username.set("")
+        self.view.var_password.set("")
+
     def _handle_back(self):
+        self._handle_clear()
         self.event_system.trigger(EventChannel.HOME_VIEW)
     
     def _handle_submit(self):
-        data = {}
-        pass
+        title = self.view.var_title.get()
+        url = self.view.var_url.get()
+        username = self.view.var_username.get()
+        _password = self.view.var_password.get()
+        current_date = datetime.now().date()
+
+        if title == "" or username == "" or _password == "":
+            self.view.show_error()
+            return
+
+        password = Password(title, url, username, _password, current_date)
+        self.model._save_password_to_database(password)
+        self.view.show_success()
+        self._handle_clear()
+        self.event_system.trigger(EventChannel.HOME_VIEW)
+
