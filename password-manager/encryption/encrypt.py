@@ -9,8 +9,7 @@ Sources:
 https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
 '''
 
-from tables import Tables
-
+from encryption.tables import Tables
 
 def str_to_hex(input: str):
     hex_val = [hex(ord(character))[2:] for character in input]
