@@ -58,6 +58,8 @@ class HomeView(Frame):
         self.button_modify = Button(self, text="Modify Password", width=15, height=1)
         self.button_modify.grid(row=2, column=0, padx=10, pady=(0, 30), sticky="w")
 
+        #If time permits, delete password functionality
+
         self.label_saved_passwords = Label(self, text="Saved Passwords", font=font_sub_header)
         self.label_saved_passwords.grid(row=3, column=0, padx=10, pady=(0,10), sticky="nw")
 

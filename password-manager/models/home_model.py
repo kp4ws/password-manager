@@ -21,14 +21,15 @@ class HomeModel:
     def __init__(self):
         self.passwords = []
 
-    def get_passwords_from_database(self) -> list:
+    def retrieve_passwords_from_database(self) -> bool:
         '''
         Retrieve passwords from the database and update local password list
         :arg self: Required by python
         :except No exceptions thrown by this method
-        :return list
+        :return bool
         '''
         #clear out current passwords and overwrite with passwords from database
+        result = True
         self.passwords = []
         try:
             cxn = connect()
@@ -49,10 +50,14 @@ class HomeModel:
 
         except mysql.connector.Error as error:
             print(f"oopsie!", error)
+            result = False
         finally:
             cursor.close()
             cxn.close()
         
+        return result
+
+    def get_passwords(self) -> list:
         return self.passwords
 
     def get_password_by_title(self, title: str) -> str:

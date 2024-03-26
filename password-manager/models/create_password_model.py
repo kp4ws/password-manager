@@ -7,8 +7,9 @@ class CreatePasswordModel:
     def __init__(self):
         pass
 
-    def _save_password_to_database(self, password: Password) -> None:
-        
+    def _save_password_to_database(self, password: Password) -> bool:
+        result = True
+
         website_title = password.get_title()
         url = password.get_url()
         username = password.get_username()
@@ -32,6 +33,9 @@ class CreatePasswordModel:
             cxn.commit()
         except mysql.connector.Error as error:
             print(f"oopsie!", error)
+            result = False
         finally:
             cursor.close()
             cxn.close()
+        
+        return result

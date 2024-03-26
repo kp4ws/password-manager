@@ -96,8 +96,14 @@ class CreatePasswordView(Frame):
         self.button_submit = Button(self, text="Save and Submit", width=15, height=1)
         self.button_submit.grid(row=7, column=0, padx=10, pady=(0, 10), sticky="nw")
 
-    def show_error(self) -> None:
+    def show_general_error(self) -> None:
         messagebox.showerror("Error", "Passwords must have a title, username, and password")
+
+    def show_password_length_error(self) -> None:
+        messagebox.showerror("Error", "Password field must be between 8 and 16 characters inclusive")
+
+    def show_error_saving_password(self) -> None:
+        messagebox.showerror("Error", "Error occured while saving the password")
 
     def show_success(self) -> None:
         messagebox.showinfo("Success", "Password saved")
