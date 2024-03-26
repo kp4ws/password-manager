@@ -15,7 +15,8 @@ class CreatePasswordModel:
         username = password.get_username()
         _password = password.get_password()
         encryption = Encryption(_password)
-        encrypted_pass  = encryption.apply_cipher()
+        encrypted_pass = encryption.apply_cipher()
+        
         print(encrypted_pass)
         
         date_created = password.get_created_date()
@@ -27,7 +28,7 @@ class CreatePasswordModel:
 
             # Query to insert the title and password to the Passwords table
             insert_into_passwords_query = "INSERT INTO Passwords (website_title, url, username, encrypted_pass, date_created) VALUES (%s, %s, %s, %s, %s)"
-            pass_values = (website_title, url, username, "encryption.apply_cipher(", date_created)
+            pass_values = (website_title, url, username, encrypted_pass, date_created)
             cursor.execute(insert_into_passwords_query, pass_values)
             #cursor.excecute(insert_into_websites_query, sites_values)
             # Commits the two queries as one transcation
