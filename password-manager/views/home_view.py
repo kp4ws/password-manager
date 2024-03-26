@@ -62,10 +62,10 @@ class HomeView(Frame):
         self.label_saved_passwords.grid(row=3, column=0, padx=10, pady=(0,10), sticky="nw")
 
         self.listbox_saved_passwords = Listbox(self, width=40)
-        self.listbox_saved_passwords.grid(row=4, column=0, padx=(10,50), pady=(0,10), sticky="nsew")
+        self.listbox_saved_passwords.grid(row=4, column=0, padx=(10,40), pady=(0,10), sticky="nsew")
 
         self.scrollbar = Scrollbar(self, orient=VERTICAL, command=self.listbox_saved_passwords.yview)
-        self.scrollbar.grid(row=4, column=0, padx=(10,50), pady=(0,10), sticky="nse")
+        self.scrollbar.grid(row=4, column=0, padx=(10,40), pady=(0,10), sticky="nse")
 
         self.listbox_saved_passwords.config(yscrollcommand=self.scrollbar.set)
 
