@@ -31,9 +31,26 @@ class CreatePasswordView(Frame):
         
         self.label_header = None
         self.button_back = None
+        
+        #Title
         self.label_title = None
-        self.var_title = StringVar()
         self.entry_title = None
+        self.var_title = StringVar()
+
+        #URL
+        self.label_url = None
+        self.entry_url = None
+        self.var_url = StringVar()
+
+        #Username
+        self.label_username = None
+        self.entry_username = None
+        self.var_username = StringVar()
+
+        #Password
+        self.label_password = None
+        self.entry_password = None
+        self.var_password = StringVar()
 
         self._create_widgets()
     
@@ -65,10 +82,10 @@ class CreatePasswordView(Frame):
         self.entry_title = Entry(self, textvariable=self.var_title)
         self.entry_title.grid(row=3, column=1, padx=(10,0), pady=0, sticky="w")
 
-        self.label_title = Label(self, text="Password:", font=font_field)
-        self.label_title.grid(row=4, column=0, padx=(10,0), pady=0, sticky="w")
-        self.entry_title = Entry(self, textvariable=self.var_title)
-        self.entry_title.grid(row=4, column=1, padx=(10,0), pady=0, sticky="w")
+        self.label_password = Label(self, text="Password:", font=font_field)
+        self.label_password.grid(row=4, column=0, padx=(10,0), pady=0, sticky="w")
+        self.entry_password = Entry(self, textvariable=self.var_title)
+        self.entry_password.grid(row=4, column=1, padx=(10,0), pady=0, sticky="w")
 
         self.button_clear = Button(self, text="Clear Input", width=15, height=1)
         self.button_clear.grid(row=5, column=0, padx=10, pady=(0, 10), sticky="w")

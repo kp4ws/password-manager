@@ -67,5 +67,5 @@ class CreatePasswordController:
         self.event_system.trigger(EventChannel.HOME_VIEW)
     
     def _handle_submit(self):
-        data = {}
-        pass
+        password = Password(self.view.)
+        self.model._save_password_to_database(password)

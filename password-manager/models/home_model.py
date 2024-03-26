@@ -1,5 +1,5 @@
 from domain import Password
-from encryption import Encryption
+
 class HomeModel:
     '''
     Serves as the HomeModel for doing business logic associated with the home page
@@ -28,11 +28,11 @@ class HomeModel:
         '''
         #TODO: retrieve passwords from the database
 
-        self.query = 'select encrypted_pass from passwords select title from websites'
-
-        while(rs.next()):
-            Password(rs.getString(1), rs.getString(2)..... encrypt(rs.String(3)))
-            self.passwords.append(Password)
+        query = 'select encrypted_pass from passwords select title from websites'
+        
+        # while(rs.next()):
+        #     Password(rs.getString(1), rs.getString(2)..... encrypt(rs.String(3)))
+        #     self.passwords.append(Password)
 
         #Password("Password 1", "", "", "dfadfdsfasdf", ""),
 
