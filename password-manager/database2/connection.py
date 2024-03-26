@@ -12,16 +12,15 @@ config.json
 
 import mysql.connector
 import json
-
+import os
 
 """
 	This function is connects to the database using the credentials defined in a config file.
 	:return Connection object
 """
 def connect():
-
 	# Open the config file to retrieve login credentials
-	with open('config.json') as f:
+	with open('./database2/config.json') as f:
 		config = json.load(f)
 
 	# Connection string
@@ -32,7 +31,6 @@ def connect():
 		database=config['database']
 	)
 	return cxn
-
 """
 	This function inserts the password and title into the Passwords table and Websites table
 	:pass_id The password id generated in the Passwords table
@@ -48,51 +46,17 @@ def add_pass(encrypted_pass: str) -> None:
 	# Connect to DB, set cursor
 	cxn = connect()
 	cursor = cxn.cursor()
-	
-	# Query to insert the title and password to the Passwords table
-	insert_into_passwords_query = "INSERT INTO Passwords (encrypted_pass) VALUES (%s)"
-	pass_values = (encrypted_pass)
-	
-	
-	# Insert the title and hashed password into Websites
-	#insert_into_websites_query = "INSERT INTO Websites (title, hashed_pass) VALUES (%s, %s)	
-	#sites_values = (title, hashed_pass)
-	
+
+	"""
 	try:
-		cursor.execute(insert_into_passwords_query, pass_values)
-		#cursor.excecute(insert_into_websites_query, sites_values)
-		# Commits the two queries as one transcation
-		cxn.commit()
+		#
+		# cxn.commit()
 	except mysql.connector.Error as error:
 		print(f"oopsie!", error)
 	finally:
 		cursor.close()
 		cxn.close()
-	
-if __name__ == '__main__':
+	"""
 
-	# For whatever reason, you have to pass in strings as lists for VARCHARS
-	#add_pass(encrypted_pass=['A32F'])
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+if __name__ == "__main__":
+	connect()

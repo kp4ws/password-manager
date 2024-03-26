@@ -1,4 +1,6 @@
 from domain import Password
+from database2 import connect
+import mysql.connector
 
 class HomeModel:
     '''
@@ -26,10 +28,40 @@ class HomeModel:
         :except No exceptions thrown by this method
         :return list
         '''
-        #TODO: retrieve passwords from the database
+        #Get database connection
+        try:
+            cxn = connect()
+            cursor = cxn.cursor()
+            query = "SELECT website_title, url, username, encrypted_pass, date_created FROM Passwords"
+            cursor.execute(query)
+            results = cursor.fetchall()
 
-        query = 'select encrypted_pass from passwords select title from websites'
+            for row in results:
+                website_title = row[0]
+                url = row[1]
+                username = row[2]
+                encrypted_pass[3]
+                date_created[4]
+                
+                password = Password(title, url, username, encrypted_pass, date_created)
+                self.passwords.append(password)
+
+        except mysql.connector.Error as error:
+            print(f"oopsie!", error)
+        finally:
+            cursor.close()
+            cxn.close()
         
+        #Create password object from results for each iteration of loop (remember to decrypt)
+        
+        #Return list of password objects
+
+
+
+
+
+
+        # query = 'select encrypted_pass from passwords select title from websites'
         # while(rs.next()):
         #     Password(rs.getString(1), rs.getString(2)..... encrypt(rs.String(3)))
         #     self.passwords.append(Password)
