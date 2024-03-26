@@ -10,6 +10,8 @@ https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
 '''
 
 from encryption.tables import Tables
+# from tables import Tables
+
 
 def str_to_hex(input: str):
     hex_val = [hex(ord(character))[2:] for character in input]
@@ -250,7 +252,12 @@ class Decryption(Tables):
         self.input = [[],[],[],[]]
         for each, ind in zip(range(0, len(input), 2), indices):
             self.input[ind].append(input[each:each+2])
-        print(self.input)
+
+        for sub_list in self.input:
+            if len(sub_list) < 4:
+                for each in range(len(sub_list), 4):
+                    sub_list.append('00')
+        # print(self.input)
         # print("\nAt start of Decryption:")
         # print_that_input(self.input)
 
@@ -405,8 +412,7 @@ class Decryption(Tables):
 
 
 if __name__ == '__main__':
-    print('Ô¿]0à´R®¸A      ')
-    encrypt_imp = Encryption('Ô¿]0à´R®¸A      ')
+    encrypt_imp = Encryption('p')
     encrypted = encrypt_imp.apply_cipher()
     print(encrypted)
     decrypt_imp = Decryption(encrypted)
