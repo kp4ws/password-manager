@@ -1,24 +1,24 @@
-"""
-Author: Azita Saleh
+'''
+Primary Author: Azita Saleh
+Contributor(s): N/A
 
-Connects to MySQL database and updates it with user-provided websites and passwords,
+Defines a function that connects to the MySQL database.
 
 Must be in the same dir as:
 
 db.sql
 config.json
-
-"""
+'''
 
 import mysql.connector
 import json
 import os
 
-"""
+def connect():
+	'''
 	This function is connects to the database using the credentials defined in a config file.
 	:return Connection object
-"""
-def connect():
+	'''
 	cxn = None
 	try:
 		# Open the config file to retrieve login credentials
@@ -36,32 +36,3 @@ def connect():
 		print(f'Error occured: {e}')
 	
 	return cxn
-"""
-	This function inserts the password and title into the Passwords table and Websites table
-	:pass_id The password id generated in the Passwords table
-	:encrypted_pass The encrypted password
-	:title The title of the website the user provided
-	:hashed_pass The hashed version of the password
-"""
-
-	
-def add_pass(encrypted_pass: str) -> None:
-
-
-	# Connect to DB, set cursor
-	cxn = connect()
-	cursor = cxn.cursor()
-
-	"""
-	try:
-		#
-		# cxn.commit()
-	except mysql.connector.Error as error:
-		print(f"oopsie!", error)
-	finally:
-		cursor.close()
-		cxn.close()
-	"""
-
-if __name__ == "__main__":
-	connect()

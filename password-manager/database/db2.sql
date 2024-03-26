@@ -1,4 +1,10 @@
---DROP TABLE Passwords;
+/*
+ * Primary Author: Azita Saleh
+ * Contributor(s): N/A
+ * 
+ * Defines the Passwords table in the MySQL database.
+ *
+ */
 
 CREATE TABLE Passwords (
 	pass_id INT AUTO_INCREMENT,
