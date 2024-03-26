@@ -28,7 +28,8 @@ class HomeModel:
         :except No exceptions thrown by this method
         :return list
         '''
-        #Get database connection
+        #clear out current passwords and overwrite with passwords from database
+        self.passwords = []
         try:
             cxn = connect()
             cursor = cxn.cursor()
