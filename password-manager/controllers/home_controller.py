@@ -68,6 +68,7 @@ class HomeController:
         :return None
         '''
         self.view.button_create.config(command=self._handle_create)
+        self.view.button_modify.config(command=self._handle_modify)
         self.view.listbox_saved_passwords.bind("<<ListboxSelect>>", self._handle_password_select)
 
     def _handle_create(self) -> None:
@@ -87,10 +88,13 @@ class HomeController:
         :return None
         '''
         selection = self.view.listbox_saved_passwords.curselection()
-        if selection:
-            index = selection[0]
-            selected_item = self.view.listbox_saved_passwords.get(index)
-            self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, selected_item)
+        if not selection:
+            self.view.show_modify_error()
+            return
+
+        index = selection[0]
+        selected_item = self.view.listbox_saved_passwords.get(index)
+        self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, selected_item)
 
     def _handle_password_select(self, event) -> None:
         '''
@@ -109,7 +113,10 @@ class HomeController:
 
             # Update the password details
             self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
+            self.view.label_selected_url.config(text=f'URL: {password.get_url()}')
+            self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
             self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
+            self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
 
 
     def _update_passwords(self) -> None:
@@ -120,5 +127,6 @@ class HomeController:
         :return None
         '''
         passwords = self.model.get_passwords_from_database()
+        self.view.listbox_saved_passwords.delete(0, END)
         for password in passwords:
             self.view.listbox_saved_passwords.insert(END, password)

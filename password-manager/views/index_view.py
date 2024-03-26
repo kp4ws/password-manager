@@ -1,5 +1,7 @@
-from tkinter import Frame, Label, Button, font
+import tkinter as tk
+from tkinter import Frame, Label, Button, font, DISABLED, Canvas, messagebox
 from root import Root
+import random
 
 class IndexView(Frame):
     '''
@@ -39,9 +41,33 @@ class IndexView(Frame):
         :return None
         '''
         font_header = font.Font(family="Helvetica", size=20, weight="bold")
-        
-        self.label_header = Label(self, text="Manage Your Passwords", font=font_header)
-        self.label_header.grid(row=0, column=0, padx=10, pady=(90, 10), sticky="ew")
+        font_subscript = font.Font(family="Helvetica", size=8, slant="italic")
 
-        self.button_enter = Button(self, text="Enter", width=20, height=1)
-        self.button_enter.grid(row=1, column=0, padx=10, pady=10)
+        self.label_header = Label(self, text="Manage Your Passwords", font=font_header)
+        self.label_header.grid(row=0, column=0, padx=10, pady=(50, 10), sticky="ew")
+
+        self.button_enter = Button(self, text="Enter", width=20, height=1, state=DISABLED)
+        self.button_enter.grid(row=1, column=0, padx=10, pady=(0,10))
+
+        self.label_captcha = Label(self, text="CAPTCHA the flag", font=font_subscript)
+        self.label_captcha.grid(row=2, column=0, padx=10, pady=(10, 0))
+
+        self._create_captcha_canvas()
+
+    def _create_captcha_canvas(self) -> None:
+        self.canvas_game = Canvas(self, width=360, height=280, bg="lightgrey", highlightthickness=0)
+        self.canvas_game.grid(row=3, column=0, padx=10, pady=0)
+
+        self.image_red_flag = tk.PhotoImage(file='./assets/redflag.gif')
+        self.image_green_flag = tk.PhotoImage(file='./assets/greenflag.gif')
+        self.image_player = tk.PhotoImage(file='./assets/player.gif')
+        
+        #TODO Procedurally place objects on start up
+        self.green_flag = self.canvas_game.create_image((50, 50), image=self.image_green_flag)
+        self.red_flag = self.canvas_game.create_image((50, 50), image=self.image_red_flag)
+        self.player = self.canvas_game.create_image((100, 250), image=self.image_player)
+
+        self.canvas_game.focus_set()
+
+    def show_captcha_error(self) -> None:
+        messagebox.showerror("Error", "Please complete the captcha to enter the application")

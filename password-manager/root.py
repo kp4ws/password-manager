@@ -19,7 +19,7 @@ class Root(Tk):
         To begin the application, call begin_loop() method
     '''
     
-    WINDOW_START_WIDTH: int = 800
+    WINDOW_START_WIDTH: int = 820
     WINDOW_START_HEIGHT: int = 500
     WINDOW_MIN_WIDTH: int = 750
     WINDOW_MIN_HEIGHT: int = 300

@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Button, font, Scrollbar, Listbox, END, VERTICAL
+from tkinter import Frame, Label, Button, font, Scrollbar, Listbox, END, VERTICAL, messagebox
 from root import Root
 
 class HomeView(Frame):
@@ -79,5 +79,17 @@ class HomeView(Frame):
         self.label_selected_title = Label(self.frame_password_details, text="Title:")
         self.label_selected_title.grid(row=4, column=1, padx=(0,250), pady=0, sticky="nw")
 
+        self.label_selected_url = Label(self.frame_password_details, text="URL:")
+        self.label_selected_url.grid(row=5, column=1, padx=(0,250), pady=0, sticky="nw")
+
+        self.label_selected_username = Label(self.frame_password_details, text="Username:")
+        self.label_selected_username.grid(row=6, column=1, padx=(0,250), pady=0, sticky="nw")
+
         self.label_selected_password = Label(self.frame_password_details, text="Password:")
-        self.label_selected_password.grid(row=5, column=1, padx=(0,250), pady=0, sticky="nw")
+        self.label_selected_password.grid(row=7, column=1, padx=(0,250), pady=0, sticky="nw")
+
+        self.label_selected_date = Label(self.frame_password_details, text="Date Created:")
+        self.label_selected_date.grid(row=8, column=1, padx=(0,250), pady=0, sticky="nw")
+
+    def show_modify_error(self) -> None:
+        messagebox.showerror("Error", "No password selected")

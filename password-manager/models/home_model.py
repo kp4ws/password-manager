@@ -1,4 +1,6 @@
 from domain import Password
+from database import connect
+import mysql.connector
 
 class HomeModel:
     '''
@@ -26,14 +28,32 @@ class HomeModel:
         :except No exceptions thrown by this method
         :return list
         '''
-        #TODO: retrieve passwords from the database
-        self.passwords = [
-            Password("Password 1", "dfadfdsfasdf"),
-            Password("Password 2", "DUDEEE"),
-            Password("Password 3", "123456789"),
-        ]
+        #Get database connection
+        try:
+            cxn = connect()
+            cursor = cxn.cursor()
+            query = "SELECT website_title, url, username, encrypted_pass, date_created FROM Passwords"
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            for row in results:
+                website_title = row[0]
+                url = row[1]
+                username = row[2]
+                encrypted_pass = row[3]
+                date_created = row[4]
+                
+                password = Password(website_title, url, username, encrypted_pass, date_created)
+                self.passwords.append(password)
+
+        except mysql.connector.Error as error:
+            print(f"oopsie!", error)
+        finally:
+            cursor.close()
+            cxn.close()
+        
         return self.passwords
-    
+
     def get_password_by_title(self, title: str) -> str:
         '''
         Retrieve passwords by title from the password list

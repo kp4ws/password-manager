@@ -406,5 +406,3 @@ if __name__ == '__main__':
     # print(rotated_word)
     # substituted_word = encrypt_imp._sub_word(rotated_word)
     # print(substituted_word)
-
-

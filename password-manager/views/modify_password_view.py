@@ -1,9 +1,9 @@
 from tkinter import Frame, Label, font, Button, StringVar, Entry, messagebox
 from root import Root
 
-class CreatePasswordView(Frame):
+class ModifyPasswordView(Frame):
     '''
-    Serves as the View for the create password screen of the application
+    Serves as the View for the modify password screen of the application
 
     METHODS:
         __init__(self, root)
@@ -64,7 +64,7 @@ class CreatePasswordView(Frame):
         font_header = font.Font(family="Helvetica", size=20, weight="bold")
         font_field = font.Font(family="Helvetica", size=11)
 
-        self.label_header = Label(self, text="Create Password", font=font_header)
+        self.label_header = Label(self, text="Modify Password", font=font_header)
         self.label_header.grid(row=0, column=0, padx=10, pady=(20, 10), sticky="w")
 
         self.label_title = Label(self, text="Title:", font=font_field)
