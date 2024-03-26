@@ -9,8 +9,7 @@ Sources:
 https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
 '''
 
-from tables import Tables
-
+from encryption.tables import Tables
 
 def str_to_hex(input: str):
     hex_val = [hex(ord(character))[2:] for character in input]
@@ -220,7 +219,12 @@ class Encryption(Tables):
         self._shift_rows()
         self._mix_columns()
         # Add round key
-        return self.input
+
+        cipher_string = ''
+        for sub_list in self.input:
+            for hex_value in sub_list:
+                cipher_string += hex_value
+        return cipher_string
 
 
 class Decryption(Tables):
@@ -233,7 +237,7 @@ class Decryption(Tables):
         add_round_key(self)
     '''
 
-    def __init__(self, input: list) -> None:
+    def __init__(self, input: str) -> None:
         super().__init__()
 
         # Input is received as a list of lists in the format:
@@ -242,8 +246,11 @@ class Decryption(Tables):
         #    [0][2]  [1][2]  [2][2]  [3][2]
         #    [0][3]  [1][3]  [2][3]  [3][3]
         # Where each number is the index if the data was a single list
-
-        self.input = [[index for index in each] for each in input]
+        indices = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3]
+        self.input = [[],[],[],[]]
+        for each, ind in zip(range(0, len(input), 2), indices):
+            self.input[ind].append(input[each:each+2])
+        print(self.input)
         # print("\nAt start of Decryption:")
         # print_that_input(self.input)
 
@@ -398,10 +405,13 @@ class Decryption(Tables):
 
 
 if __name__ == '__main__':
+    print('Ô¿]0à´R®¸A      ')
     encrypt_imp = Encryption('Ô¿]0à´R®¸A      ')
     encrypted = encrypt_imp.apply_cipher()
+    print(encrypted)
     decrypt_imp = Decryption(encrypted)
     original = decrypt_imp.apply_cipher()
+    print(original)
     # rotated_word = encrypt_imp._rot_word(['01', '02', '03', '04'])
     # print(rotated_word)
     # substituted_word = encrypt_imp._sub_word(rotated_word)
