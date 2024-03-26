@@ -3,7 +3,10 @@ from views import IndexView, HomeView, CreatePasswordView, ModifyPasswordView
 from controllers import IndexController, HomeController, CreatePasswordController, ModifyPasswordController
 from events import EventSystem
 from root import Root
+from PIL import Image, ImageTk
 import traceback
+import os
+import tkinter as tk
 
 def _main() -> None:
     '''
@@ -17,6 +20,24 @@ def _main() -> None:
         root = Root()
         #Event System
         event_system = EventSystem()
+
+        # Icon set up
+
+        #Make the path to icon
+        icon_dir = os.path.abspath("./icon")
+        icon_path = os.path.join(icon_dir, "icon.png")
+
+        #Load the icon
+        icon_image_pil = Image.open(icon_path)
+
+        #Convert and resize to 32 px by 32 px
+        icon_image_pil = icon_image_pil.resize((16, 16))
+
+        #Convert to PhotoImage
+        icon_image = ImageTk.PhotoImage(icon_image_pil)
+
+        #Set the window icon
+        root.tk.call('wm', 'iconphoto', root._w, '-default', icon_image)
 
         #Models
         index_model = IndexModel()
