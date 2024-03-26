@@ -77,6 +77,17 @@ class CreatePasswordController:
         self._handle_clear()
         self.event_system.trigger(EventChannel.HOME_VIEW)
     
+    def _validate_password(self, title, url, username, password) -> bool:
+        if title == "" or username == "" or password == "":
+            self.view.show_general_error()
+            return False
+        
+        if len(password) < 8 or len(password) > 16:
+            self.view.show_password_length_error()
+            return False
+        
+        return True
+
     def _handle_submit(self):
         title = self.view.var_title.get()
         url = self.view.var_url.get()
@@ -84,12 +95,18 @@ class CreatePasswordController:
         _password = self.view.var_password.get()
         current_date = datetime.now().date()
 
-        if title == "" or username == "" or _password == "":
-            self.view.show_error()
+        password_flag = self._validate_password(title, url, username, _password)
+
+        if not password_flag:
             return
 
         password = Password(title, url, username, _password, current_date)
-        self.model._save_password_to_database(password)
+        save_flag = self.model._save_password_to_database(password)
+
+        if not save_flag:
+            self.view.show_error_saving_password()
+            return
+        
         self.view.show_success()
         self._handle_clear()
         self.event_system.trigger(EventChannel.HOME_VIEW)

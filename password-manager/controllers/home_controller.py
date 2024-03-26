@@ -126,7 +126,13 @@ class HomeController:
         :except No exceptions thrown by this method
         :return None
         '''
-        passwords = self.model.get_passwords_from_database()
+        password_flag = self.model.retrieve_passwords_from_database()
+
+        if not password_flag:
+            self.view.show_error_retrieving_passwords()
+            return
+        
+        passwords = self.model.get_passwords()
         self.view.listbox_saved_passwords.delete(0, END)
         for password in passwords:
             self.view.listbox_saved_passwords.insert(END, password)
