@@ -19,17 +19,22 @@ import os
 	:return Connection object
 """
 def connect():
-	# Open the config file to retrieve login credentials
-	with open('./database2/config.json') as f:
-		config = json.load(f)
+	cxn = None
+	try:
+		# Open the config file to retrieve login credentials
+		with open('./database/config.json') as f:
+			config = json.load(f)
 
-	# Connection string
-	cxn = mysql.connector.connect(
-		username=config['username'],
-		password=config['password'],
-		host=config['host'],
-		database=config['database']
-	)
+		# Connection string
+		cxn = mysql.connector.connect(
+			username=config['username'],
+			password=config['password'],
+			host=config['host'],
+			database=config['database']
+		)
+	except Exception as e:
+		print(f'Error occured: {e}')
+	
 	return cxn
 """
 	This function inserts the password and title into the Passwords table and Websites table

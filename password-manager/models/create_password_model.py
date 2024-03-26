@@ -1,6 +1,6 @@
 from domain import Password
 from encryption import Encryption
-from database2 import connect
+from database import connect
 import mysql.connector
 
 class CreatePasswordModel:
@@ -15,16 +15,17 @@ class CreatePasswordModel:
         encrypted_pass = password.get_password()
         #TODO: encrypted_pass = encrypt(password)
         date_created = password.get_created_date()
-
-        # Connect to DB, set cursor
-        cxn = connect()
-        cursor = cxn.cursor()
-
-        # Query to insert the title and password to the Passwords table
-        insert_into_passwords_query = "INSERT INTO Passwords (website_title, url, username, encrypted_pass, date_created) VALUES (%s, %s, %s, %s, %s)"
-        pass_values = (website_title, url, username, encrypted_pass, date_created)
         
+        print(username)
+
         try:
+            # Connect to DB, set cursor
+            cxn = connect()
+            cursor = cxn.cursor()
+
+            # Query to insert the title and password to the Passwords table
+            insert_into_passwords_query = "INSERT INTO Passwords (website_title, url, username, encrypted_pass, date_created) VALUES (%s, %s, %s, %s, %s)"
+            pass_values = (website_title, url, username, encrypted_pass, date_created)
             cursor.execute(insert_into_passwords_query, pass_values)
             #cursor.excecute(insert_into_websites_query, sites_values)
             # Commits the two queries as one transcation

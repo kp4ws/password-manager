@@ -1,5 +1,5 @@
 from domain import Password
-from database2 import connect
+from database import connect
 import mysql.connector
 
 class HomeModel:
@@ -40,10 +40,10 @@ class HomeModel:
                 website_title = row[0]
                 url = row[1]
                 username = row[2]
-                encrypted_pass[3]
-                date_created[4]
+                encrypted_pass = row[3]
+                date_created = row[4]
                 
-                password = Password(title, url, username, encrypted_pass, date_created)
+                password = Password(website_title, url, username, encrypted_pass, date_created)
                 self.passwords.append(password)
 
         except mysql.connector.Error as error:
@@ -52,24 +52,6 @@ class HomeModel:
             cursor.close()
             cxn.close()
         
-        #Create password object from results for each iteration of loop (remember to decrypt)
-        
-        #Return list of password objects
-
-
-
-
-
-
-        # query = 'select encrypted_pass from passwords select title from websites'
-        # while(rs.next()):
-        #     Password(rs.getString(1), rs.getString(2)..... encrypt(rs.String(3)))
-        #     self.passwords.append(Password)
-
-        #Password("Password 1", "", "", "dfadfdsfasdf", ""),
-
-        #decrypt password
-
         return self.passwords
 
     def get_password_by_title(self, title: str) -> str:

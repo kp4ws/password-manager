@@ -113,7 +113,10 @@ class HomeController:
 
             # Update the password details
             self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
+            self.view.label_selected_url.config(text=f'URL: {password.get_url()}')
+            self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
             self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
+            self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
 
 
     def _update_passwords(self) -> None:
