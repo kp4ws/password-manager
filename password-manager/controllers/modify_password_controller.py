@@ -1,6 +1,7 @@
 from events import EventChannel
 from views import ModifyPasswordView
 from models import ModifyPasswordModel
+from domain import Password
 
 class ModifyPasswordController:
     '''
@@ -44,6 +45,18 @@ class ModifyPasswordController:
         :return None
         '''
         
+        # Update the password details
+        self.view.var_title.set(password.get_title())
+        self.view.var_url.set(password.get_url())
+        self.view.var_username.set(password.get_username())
+        self.view.var_password.set(password.get_password())
+
+        # self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
+        # self.view.label_selected_url.config(text=f'URL: {password.get_url()}')
+        # self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
+        # self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
+        # self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
+
         self.view.tkraise()
 
     def _subscribe(self) -> None:
@@ -55,6 +68,7 @@ class ModifyPasswordController:
         '''
         self.event_system.subscribe(event=EventChannel.MODIFY_PASSWORD_VIEW, callback=self.show_view)
 
+    
     def _bind(self) -> None:
         '''
         Binds commands from the associated View
@@ -62,4 +76,49 @@ class ModifyPasswordController:
         :except No exceptions thrown by this method
         :return None
         '''
-        pass
+        self.view.button_back.config(command=self._handle_back)
+        self.view.button_submit.config(command=self._handle_submit)
+
+    def _handle_clear(self):
+        self.view.var_title.set("")
+        self.view.var_url.set("")
+        self.view.var_username.set("")
+        self.view.var_password.set("")
+
+    def _handle_back(self):
+        self._handle_clear()
+        self.event_system.trigger(EventChannel.HOME_VIEW)
+    
+    def _validate_password(self, title, url, username, password) -> bool:
+        if title == "" or username == "" or password == "":
+            self.view.show_general_error()
+            return False
+        
+        if len(password) < 8 or len(password) > 16:
+            self.view.show_password_length_error()
+            return False
+        
+        return True
+
+    def _handle_submit(self):
+        title = self.view.var_title.get()
+        url = self.view.var_url.get()
+        username = self.view.var_username.get()
+        _password = self.view.var_password.get()
+        current_date = datetime.now().date()
+
+        password_flag = self._validate_password(title, url, username, _password)
+
+        if not password_flag:
+            return
+
+        password = Password(title, url, username, _password, current_date)
+        update_flag = self.model._update_password_in_database(password)
+
+        if not update_flag:
+            self.view.show_error_updating_password()
+            return
+        
+        self.view.show_success()
+        self._handle_clear()
+        self.event_system.trigger(EventChannel.HOME_VIEW)

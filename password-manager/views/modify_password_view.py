@@ -27,7 +27,7 @@ class ModifyPasswordView(Frame):
         super().__init__(root)
         self.grid(row=0, column=0, sticky="nsew")
         self.grid_columnconfigure(2, weight=1)
-        self.rowconfigure(7, weight=1)
+        self.rowconfigure(6, weight=1)
         
         self.label_header = None
         self.button_back = None
@@ -87,17 +87,20 @@ class ModifyPasswordView(Frame):
         self.entry_password = Entry(self, textvariable=self.var_password)
         self.entry_password.grid(row=4, column=1, padx=(10,0), pady=(0,5), sticky="nw")
 
-        self.button_clear = Button(self, text="Clear Input", width=15, height=1)
-        self.button_clear.grid(row=5, column=0, padx=10, pady=(0, 10), sticky="nw")
-
         self.button_back = Button(self, text="Exit Without Saving", width=15, height=1)
-        self.button_back.grid(row=6, column=0, padx=10, pady=(0, 10), sticky="nw")
+        self.button_back.grid(row=5, column=0, padx=10, pady=(0, 10), sticky="nw")
         
-        self.button_submit = Button(self, text="Save and Submit", width=15, height=1)
-        self.button_submit.grid(row=7, column=0, padx=10, pady=(0, 10), sticky="nw")
+        self.button_submit = Button(self, text="Save and Update", width=15, height=1)
+        self.button_submit.grid(row=6, column=0, padx=10, pady=(0, 10), sticky="nw")
 
-    def show_error(self) -> None:
+    def show_general_error(self) -> None:
         messagebox.showerror("Error", "Passwords must have a title, username, and password")
 
+    def show_password_length_error(self) -> None:
+        messagebox.showerror("Error", "Password field must be between 8 and 16 characters inclusive")
+
+    def show_error_updating_password(self) -> None:
+        messagebox.showerror("Error", "Error occured while modifying the password")
+
     def show_success(self) -> None:
-        messagebox.showinfo("Success", "Password saved")
+        messagebox.showinfo("Success", "Password updated")
