@@ -110,4 +110,3 @@ class CreatePasswordController:
         self.view.show_success()
         self._handle_clear()
         self.event_system.trigger(EventChannel.HOME_VIEW)
-

@@ -94,7 +94,8 @@ class HomeController:
 
         index = selection[0]
         selected_item = self.view.listbox_saved_passwords.get(index)
-        self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, selected_item)
+        password = self.model.get_password_by_title(selected_item)
+        self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, password)
 
     def _handle_password_select(self, event) -> None:
         '''
