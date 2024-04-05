@@ -89,13 +89,40 @@ class HomeController:
         '''
         selection = self.view.listbox_saved_passwords.curselection()
         if not selection:
-            self.view.show_modify_error()
+            self.view.show_selection_error()
             return
 
         index = selection[0]
         selected_item = self.view.listbox_saved_passwords.get(index)
         password = self.model.get_password_by_title(selected_item)
         self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, password)
+
+    def _handle_delete(self) -> None:
+        '''
+        Handles pressing the Modify button in the HomeView
+        :arg self: Required by python
+        :except No exceptions thrown by this method
+        :return None
+        '''
+        selection = self.view.listbox_saved_passwords.curselection()
+        if not selection:
+            self.view.show_selection_error()
+            return
+
+        index = selection[0]
+        password_title = self.view.listbox_saved_passwords.get(index)
+
+        should_delete = self.view.show_delete_confirmation_message(password_title)
+        if should_delete == 'yes':
+            deleted_flag = self.model.delete_password_from_database(password_title)
+            
+            if deleted_flag:
+                self.view.show_delete_success()
+            else:
+                self.view_show_delete_error()
+
+        self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, password)
+        
 
     def _handle_password_select(self, event) -> None:
         '''
@@ -118,7 +145,6 @@ class HomeController:
             self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
             self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
             self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
-
 
     def _update_passwords(self) -> None:
         '''

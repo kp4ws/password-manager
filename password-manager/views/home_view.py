@@ -93,5 +93,15 @@ class HomeView(Frame):
         self.label_selected_date = Label(self.frame_password_details, text="Date Created:")
         self.label_selected_date.grid(row=8, column=1, padx=(0,250), pady=0, sticky="nw")
 
-    def show_modify_error(self) -> None:
+    def show_selection_error(self) -> None:
         messagebox.showerror("Error", "No password selected")
+
+    def show_delete_error(self) -> None:
+        messagebox.showerror("Error", "Error occurred while deleting password, try again")
+
+    def show_delete_confirmation_message(self, password_title) -> str:
+        confirmation = messagebox.askquestion("Confirmation", f'Are you sure you want to delete {password_title} ?')
+        return confirmation
+
+    def show_delete_success(self) -> None:
+        messagebox.showerror("Success", "Error occurred while deleting password, try again")
