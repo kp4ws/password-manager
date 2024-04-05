@@ -7,39 +7,35 @@ class ModifyPasswordModel:
     def __init__(self):
         pass
     
-    def _update_password_in_database(self, password: Password) -> bool:
-        pass
-        #TODO
-        # result = True
+    def _update_password_in_database(self, password: Password, original_title: str) -> bool:
+        result = True
 
-        # website_title = password.get_title()
-        # url = password.get_url()
-        # username = password.get_username()
-        # _password = password.get_password()
-        # encryption = Encryption(_password)
-        # encrypted_pass = encryption.apply_cipher()
-        
-        # print(encrypted_pass)
-        
-        # date_created = password.get_created_date()
+        website_title = password.get_title()
+        url = password.get_url()
+        username = password.get_username()
+        _password = password.get_password()
 
-        # try:
-        #     # Connect to DB, set cursor
-        #     cxn = connect()
-        #     cursor = cxn.cursor()
+        print(_password)
+        encrypted_pass = password
+        #encryption = Encryption(_password)
+        #encrypted_pass = encryption.apply_cipher()
 
-        #     # Query to insert the title and password to the Passwords table
-        #     insert_into_passwords_query = "INSERT INTO Passwords (website_title, url, username, encrypted_pass, date_created) VALUES (%s, %s, %s, %s, %s)"
-        #     pass_values = (website_title, url, username, encrypted_pass, date_created)
-        #     cursor.execute(insert_into_passwords_query, pass_values)
-        #     #cursor.excecute(insert_into_websites_query, sites_values)
-        #     # Commits the two queries as one transcation
-        #     cxn.commit()
-        # except mysql.connector.Error as error:
-        #     print(f"oopsie!", error)
-        #     result = False
-        # finally:
-        #     cursor.close()
-        #     cxn.close()
+        try:
+            # Connect to DB, set cursor
+            cxn = connect()
+            cursor = cxn.cursor()
+
+            # Query to update the Password's title, url, username, and password
+            update_passwords_query = "UPDATE Passwords SET website_title = %s, url = %s, username = %s, encrypted_pass = %s WHERE website_title = %s"
+            pass_values = (website_title, url, username, encrypted_pass, original_title)
+
+            cursor.execute(update_passwords_query, pass_values)
+            cxn.commit()
+        except mysql.connector.Error as error:
+            print(f"oopsie!", error)
+            result = False
+        finally:
+            cursor.close()
+            cxn.close()
         
-        # return result
+        return result
