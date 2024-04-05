@@ -14,11 +14,8 @@ class ModifyPasswordModel:
         url = password.get_url()
         username = password.get_username()
         _password = password.get_password()
-
-        print(_password)
-        encrypted_pass = password
-        #encryption = Encryption(_password)
-        #encrypted_pass = encryption.apply_cipher()
+        encryption = Encryption(_password)
+        encrypted_pass = encryption.apply_cipher()
 
         try:
             # Connect to DB, set cursor
