@@ -13,25 +13,6 @@ from encryption.tables import Tables
 # from tables import Tables
 
 
-def str_to_hex(input: str):
-    hex_val = [hex(ord(character))[2:] for character in input]
-    if len(hex_val) < 17:
-        if len(hex_val) < 16:
-            for each in range(16 - len(hex_val)):
-                hex_val.insert(0, '00')
-        return hex_val
-    else:
-        return None
-
-
-def hex_to_str(input: list):
-    result_string = ''
-    for sub_list in input:
-        for item in sub_list:
-            result_string += chr(int(item, 16))
-    return result_string
-
-
 def print_that_input(grid: list) -> None:
     print(grid[0][0], grid[1][0], grid[2][0], grid[3][0])
     print(grid[0][1], grid[1][1], grid[2][1], grid[3][1])
@@ -51,7 +32,7 @@ class Encryption(Tables):
 
     def __init__(self, input: str) -> None:
         super().__init__()
-        input = str_to_hex(input)
+        input = self.str_to_hex(input)
         # Each sublist in input is a COLUMN of the input so the input actually looks like:
         #    [0]  [4]  [8]   [12]
         #    [1]  [5]  [9]   [13]
@@ -200,7 +181,7 @@ class Encryption(Tables):
         '''
         This method is the same for Encrypt and Decrypt classes
         Expand the cipher key to be 44 bytes long
-        :arg key: Required by python
+        :arg key: A list of format [[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16]]
         :arg ky: not sure what this is for ATM
         :except No exceptions thrown by this method
         :return None
@@ -407,17 +388,19 @@ class Decryption(Tables):
         self._inv_shift_rows()
         self._inv_sub_bytes()
         # Add round key
-        str_value = hex_to_str(self.input)
+        str_value = self.hex_to_str(self.input)
         return str_value
 
 
 if __name__ == '__main__':
-    encrypt_imp = Encryption('p')
+    input_password = input("Please enter a password:")
+    print("Password before encryption:", input_password)
+    encrypt_imp = Encryption(input_password)
     encrypted = encrypt_imp.apply_cipher()
-    print(encrypted)
+    print("Password after encryption:", encrypted)
     decrypt_imp = Decryption(encrypted)
     original = decrypt_imp.apply_cipher()
-    print(original)
+    print("Password after decryption:", original)
     # rotated_word = encrypt_imp._rot_word(['01', '02', '03', '04'])
     # print(rotated_word)
     # substituted_word = encrypt_imp._sub_word(rotated_word)

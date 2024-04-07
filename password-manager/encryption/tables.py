@@ -160,3 +160,19 @@ class Tables:
             ['37', '39', '2b', '25', '0f', '01', '13', '1d', '47', '49', '5b', '55', '7f', '71', '63', '6d'],
             ['d7', 'd9', 'cb', 'c5', 'ef', 'e1', 'f3', 'fd', 'a7', 'a9', 'bb', 'b5', '9f', '91', '83', '8d']]
 
+    def str_to_hex(self, input: str):
+        hex_val = [hex(ord(character))[2:] for character in input]
+        if len(hex_val) < 17:
+            if len(hex_val) < 16:
+                for each in range(16 - len(hex_val)):
+                    hex_val.insert(0, '00')
+            return hex_val
+        else:
+            return None
+
+    def hex_to_str(self, input: list):
+        result_string = ''
+        for sub_list in input:
+            for item in sub_list:
+                result_string += chr(int(item, 16))
+        return result_string
