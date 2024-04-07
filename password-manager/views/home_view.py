@@ -3,7 +3,7 @@ Primary Author: Kent Pawson
 Contributor(s): N/A
 '''
 
-from tkinter import Frame, Label, Button, font, Scrollbar, Listbox, END, VERTICAL, messagebox
+from tkinter import Frame, Label, Button, font, Scrollbar, Listbox, END, VERTICAL, messagebox, StringVar
 from root import Root
 
 class HomeView(Frame):
@@ -42,8 +42,21 @@ class HomeView(Frame):
         self.grid_columnconfigure(2, weight=1)
         self.rowconfigure(5, weight=1)
         
+        print("test")
+
+        self.var_title = StringVar()
+        self.var_url = StringVar()
+        self.var_username = StringVar()
+        self.var_password = StringVar()
+        self.var_created_date = StringVar()
+
         self._create_widgets()
-    
+
+    def update_password(self, password):
+        self.var_password.set(f'Password: {password}')
+        print(self.var_password.get())
+        self.update()
+
     def _create_widgets(self) -> None:
         '''
         Create widgets for the view
@@ -51,6 +64,10 @@ class HomeView(Frame):
         :except No exceptions thrown by this method
         :return None
         '''
+
+        print("test2")
+
+        
         font_header = font.Font(family="Helvetica", size=20, weight="bold")
         font_sub_header = font.Font(family="Helvetica", size=16)
 
@@ -84,19 +101,19 @@ class HomeView(Frame):
         self.frame_password_details.grid(row=5, column=1, padx=(0,10), pady=(0, 10), sticky="nsew")
         self.frame_password_details.grid_propagate(False)
 
-        self.label_selected_title = Label(self.frame_password_details, text="Title:")
+        self.label_selected_title = Label(self.frame_password_details, textvariable=self.var_title)
         self.label_selected_title.grid(row=5, column=1, padx=(0,250), pady=0, sticky="nw")
 
-        self.label_selected_url = Label(self.frame_password_details, text="URL:")
+        self.label_selected_url = Label(self.frame_password_details, textvariable=self.var_url)
         self.label_selected_url.grid(row=6, column=1, padx=(0,250), pady=0, sticky="nw")
 
-        self.label_selected_username = Label(self.frame_password_details, text="Username:")
+        self.label_selected_username = Label(self.frame_password_details, textvariable=self.var_username)
         self.label_selected_username.grid(row=7, column=1, padx=(0,250), pady=0, sticky="nw")
 
-        self.label_selected_password = Label(self.frame_password_details, text="Password:")
+        self.label_selected_password = Label(self.frame_password_details, textvariable=self.var_password)
         self.label_selected_password.grid(row=8, column=1, padx=(0,250), pady=0, sticky="nw")
 
-        self.label_selected_date = Label(self.frame_password_details, text="Date Created:")
+        self.label_selected_date = Label(self.frame_password_details, textvariable=self.var_created_date)
         self.label_selected_date.grid(row=9, column=1, padx=(0,250), pady=0, sticky="nw")
 
     def show_selection_error(self) -> None:

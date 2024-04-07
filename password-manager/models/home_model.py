@@ -49,6 +49,7 @@ class HomeModel:
                 url = row[1]
                 username = row[2]
                 encrypted_pass = row[3]
+
                 date_created = row[4]
 
                 decryption = Decryption(encrypted_pass)

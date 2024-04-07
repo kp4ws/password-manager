@@ -79,11 +79,14 @@ class HomeController:
         self.view.listbox_saved_passwords.bind("<<ListboxSelect>>", self._handle_password_select)
 
     def _update_password_details(self, title, url, username, password, created_date) -> None:
-        self.view.label_selected_title.config(text=f'Title: {title}')
-        self.view.label_selected_url.config(text=f'URL: {url}')
-        self.view.label_selected_username.config(text=f'Username: {username}')
-        self.view.label_selected_password.config(text=f'Password: {password}')
-        self.view.label_selected_date.config(text=f'Date Created: {created_date}')
+        self.view.var_title.set(f'Title: {title}')
+        self.view.var_url.set(f'URL: {url}')
+        self.view.var_username.set(f'Username: {username}')
+        # self.view.var_password.set(f'Password: {password}')
+        self.view.update_password(password)
+        self.view.var_created_date.set(f'Created Date: {created_date}')
+
+        self.view.update()
 
     def _handle_create(self) -> None:
         '''
@@ -151,6 +154,7 @@ class HomeController:
             selected_item = self.view.listbox_saved_passwords.get(index)
             
             password = self.model.get_password_by_title(selected_item)
+
             # Update the password details
             self._update_password_details(password.get_title(),password.get_url(),password.get_username(),password.get_password(),password.get_created_date())
 
