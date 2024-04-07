@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from events import EventChannel
 from views import CreatePasswordView
 from models import CreatePasswordModel

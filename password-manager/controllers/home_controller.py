@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from events import EventChannel
 from views import HomeView
 from models import HomeModel
@@ -49,6 +54,7 @@ class HomeController:
         :return None
         '''
         self._update_passwords()
+        self._update_password_details('','','','','')
         self.view.tkraise()
 
     def _subscribe(self) -> None:
@@ -69,7 +75,15 @@ class HomeController:
         '''
         self.view.button_create.config(command=self._handle_create)
         self.view.button_modify.config(command=self._handle_modify)
+        self.view.button_delete.config(command=self._handle_delete)
         self.view.listbox_saved_passwords.bind("<<ListboxSelect>>", self._handle_password_select)
+
+    def _update_password_details(self, title, url, username, password, created_date) -> None:
+        self.view.label_selected_title.config(text=f'Title: {title}')
+        self.view.label_selected_url.config(text=f'URL: {url}')
+        self.view.label_selected_username.config(text=f'Username: {username}')
+        self.view.label_selected_password.config(text=f'Password: {password}')
+        self.view.label_selected_date.config(text=f'Date Created: {created_date}')
 
     def _handle_create(self) -> None:
         '''
@@ -114,15 +128,14 @@ class HomeController:
 
         should_delete = self.view.show_delete_confirmation_message(password_title)
         if should_delete == 'yes':
-            deleted_flag = self.model.delete_password_from_database(password_title)
+            deleted_success = self.model.delete_password_from_database(password_title)
             
-            if deleted_flag:
+            if deleted_success:
                 self.view.show_delete_success()
             else:
-                self.view_show_delete_error()
+                self.view.show_delete_error()
 
-        self.event_system.trigger(EventChannel.MODIFY_PASSWORD_VIEW, password)
-        
+        self.event_system.trigger(EventChannel.HOME_VIEW)
 
     def _handle_password_select(self, event) -> None:
         '''
@@ -138,13 +151,8 @@ class HomeController:
             selected_item = self.view.listbox_saved_passwords.get(index)
             
             password = self.model.get_password_by_title(selected_item)
-
             # Update the password details
-            self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
-            self.view.label_selected_url.config(text=f'URL: {password.get_url()}')
-            self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
-            self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
-            self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
+            self._update_password_details(password.get_title(),password.get_url(),password.get_username(),password.get_password(),password.get_created_date())
 
     def _update_passwords(self) -> None:
         '''
