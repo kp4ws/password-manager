@@ -62,10 +62,15 @@ class IndexView(Frame):
         self.image_green_flag = tk.PhotoImage(file='./assets/greenflag.gif')
         self.image_player = tk.PhotoImage(file='./assets/player.gif')
         
-        #TODO Procedurally place objects on start up
-        self.green_flag = self.canvas_game.create_image((50, 50), image=self.image_green_flag)
-        self.red_flag = self.canvas_game.create_image((50, 50), image=self.image_red_flag)
-        self.player = self.canvas_game.create_image((100, 250), image=self.image_player)
+        flag_x = random.randint(20,300)
+        flag_y = random.randint(20,300)
+
+        player_x = random.randint(50,260)
+        player_y = random.randint(50,260)
+
+        self.green_flag = self.canvas_game.create_image((flag_x, flag_y), image=self.image_green_flag)
+        self.red_flag = self.canvas_game.create_image((flag_x, flag_y), image=self.image_red_flag)
+        self.player = self.canvas_game.create_image((player_x, player_y), image=self.image_player)
 
         self.canvas_game.focus_set()
 

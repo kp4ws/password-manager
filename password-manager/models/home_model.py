@@ -60,6 +60,27 @@ class HomeModel:
             cxn.close()
         
         return result
+    
+    def delete_password_from_database(self, password) -> bool:
+        result = True
+        try:
+            cxn = connect()
+            cursor = cxn.cursor()
+
+             # Query to delete password from Passwords table
+            delete_from_passwords_query = "DELETE FROM Passwords WHERE website_title = %s"
+            pass_values = (password.get_title())
+            cursor.execute(delete_from_passwords_query, pass_values)
+            cxn.commit()
+
+        except mysql.connector.Error as error:
+            print(f"oopsie!", error)
+            result = False
+        finally:
+            cursor.close()
+            cxn.close()
+        
+        return result
 
     def get_passwords(self) -> list:
         return self.passwords
