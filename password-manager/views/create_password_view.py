@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from tkinter import Frame, Label, font, Button, StringVar, Entry, messagebox
 from root import Root
 

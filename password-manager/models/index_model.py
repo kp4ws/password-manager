@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): Azita Saleh
+'''
+
 class IndexModel:
     def __init__(self):
         self.captcha_completed = False

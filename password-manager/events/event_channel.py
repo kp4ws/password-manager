@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from enum import Enum
 
 class EventChannel(Enum):

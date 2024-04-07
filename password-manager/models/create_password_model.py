@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): Azita Saleh
+'''
+
 from domain import Password
 from database import connect
 import mysql.connector

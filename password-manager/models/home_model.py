@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): Azita Saleh 
+'''
+
 from domain import Password
 from database import connect
 import mysql.connector
@@ -69,7 +74,7 @@ class HomeModel:
 
              # Query to delete password from Passwords table
             delete_from_passwords_query = "DELETE FROM Passwords WHERE website_title = %s"
-            pass_values = (password.get_title())
+            pass_values = (password,)
             cursor.execute(delete_from_passwords_query, pass_values)
             cxn.commit()
 
