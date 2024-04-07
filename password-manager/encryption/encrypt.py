@@ -9,8 +9,8 @@ Sources:
 https://csrc.nist.gov/files/pubs/fips/197/final/docs/fips-197.pdf
 '''
 
-# from encryption.tables import Tables
-from tables import Tables
+from encryption.tables import Tables
+# from tables import Tables
 
 
 def print_that_input(grid: list) -> None:
