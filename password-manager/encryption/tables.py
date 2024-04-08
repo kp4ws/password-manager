@@ -160,7 +160,13 @@ class Tables:
             ['37', '39', '2b', '25', '0f', '01', '13', '1d', '47', '49', '5b', '55', '7f', '71', '63', '6d'],
             ['d7', 'd9', 'cb', 'c5', 'ef', 'e1', 'f3', 'fd', 'a7', 'a9', 'bb', 'b5', '9f', '91', '83', '8d']]
 
-    def str_to_hex(self, input: str):
+    def str_to_hex(self, input: str) -> list:
+        '''
+        Accepts a string to be converted into a corresponding hexadecimal list
+        :arg input: A string to be converted into a list of hex values
+        :except ValueError if input is over 16 characters
+        :return: list of hex values
+        '''
         hex_val = [hex(ord(character))[2:] for character in input]
         if len(hex_val) < 17:
             if len(hex_val) < 16:
@@ -168,9 +174,14 @@ class Tables:
                     hex_val.insert(0, '00')
             return hex_val
         else:
-            return None
+            raise ValueError
 
     def hex_to_str(self, input: list):
+        '''
+        Accepts a list of hexadecimal values and converts to an ascii string which is returned
+        :arg input: A string to be converted into a list of hex values
+        :return: list of hex values or None if input is invalid
+        '''
         result_string = ''
         for sub_list in input:
             for item in sub_list:
