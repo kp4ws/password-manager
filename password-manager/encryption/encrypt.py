@@ -494,16 +494,22 @@ class Decryption(Tables):
         self._inv_sub_bytes()
 
         str_value = self.hex_to_str(self.input)
+        str_value = str_value.strip('\0')
+        print("string value =", str_value)
         return str_value
 
 
 if __name__ == '__main__':
-    the_key = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
+    the_key_1 = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
     input_password = input("Please enter a password:")
     print("Password before encryption:", input_password)
-    encrypt_imp = Encryption(input_password, the_key)
+    encrypt_imp = Encryption(input_password, the_key_1)
     encrypted = encrypt_imp.apply_cipher()
     print("Password after encryption:", encrypted.upper())
-    decrypt_imp = Decryption(encrypted, the_key)
+    the_key_2 = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
+    decrypt_imp = Decryption(encrypted, the_key_2)
     original = decrypt_imp.apply_cipher()
+    for each in original:
+        print(each)
+
     print("Password after decryption:", original)
