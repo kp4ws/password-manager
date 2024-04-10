@@ -19,9 +19,10 @@ class CreatePasswordModel:
         url = password.get_url()
         username = password.get_username()
         _password = password.get_password()
-        encryption = Encryption(_password)
+        key = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
+        encryption = Encryption(_password, key)
         encrypted_pass = encryption.apply_cipher()
-        
+
         date_created = password.get_created_date()
 
         try:

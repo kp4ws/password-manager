@@ -52,8 +52,10 @@ class HomeModel:
 
                 date_created = row[4]
 
-                decryption = Decryption(encrypted_pass)
+                key = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
+                decryption = Decryption(encrypted_pass, key)
                 decrypted_pass = decryption.apply_cipher()
+
                 #Remove null characters in decrypted string
                 decrypted_pass = decrypted_pass.replace('\x00', '')
 
