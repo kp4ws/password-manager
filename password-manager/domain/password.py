@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 class Password:
     '''
     Password blueprint for a password object to be stored and retrieved in the database

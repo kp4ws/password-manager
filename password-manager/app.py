@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): Azita Saleh
+'''
+
 from models import IndexModel, HomeModel, CreatePasswordModel, ModifyPasswordModel
 from views import IndexView, HomeView, CreatePasswordView, ModifyPasswordView
 from controllers import IndexController, HomeController, CreatePasswordController, ModifyPasswordController

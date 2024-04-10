@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from events import EventSystem, EventChannel
 from views import IndexView
 from models import IndexModel

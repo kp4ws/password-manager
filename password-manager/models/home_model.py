@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): Azita Saleh 
+'''
+
 from domain import Password
 from database import connect
 import mysql.connector
@@ -44,13 +49,37 @@ class HomeModel:
                 url = row[1]
                 username = row[2]
                 encrypted_pass = row[3]
+
                 date_created = row[4]
 
                 decryption = Decryption(encrypted_pass)
                 decrypted_pass = decryption.apply_cipher()
+                #Remove null characters in decrypted string
+                decrypted_pass = decrypted_pass.replace('\x00', '')
 
                 password = Password(website_title, url, username, decrypted_pass, date_created)
                 self.passwords.append(password)
+
+        except mysql.connector.Error as error:
+            print(f"oopsie!", error)
+            result = False
+        finally:
+            cursor.close()
+            cxn.close()
+        
+        return result
+    
+    def delete_password_from_database(self, password) -> bool:
+        result = True
+        try:
+            cxn = connect()
+            cursor = cxn.cursor()
+
+             # Query to delete password from Passwords table
+            delete_from_passwords_query = "DELETE FROM Passwords WHERE website_title = %s"
+            pass_values = (password,)
+            cursor.execute(delete_from_passwords_query, pass_values)
+            cxn.commit()
 
         except mysql.connector.Error as error:
             print(f"oopsie!", error)
