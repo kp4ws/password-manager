@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from tkinter import Tk
 
 class Root(Tk):

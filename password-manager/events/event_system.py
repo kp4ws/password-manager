@@ -1,3 +1,8 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 class EventSystem:
     '''
     Main event system of the application

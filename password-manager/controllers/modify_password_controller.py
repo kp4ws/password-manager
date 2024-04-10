@@ -1,7 +1,13 @@
+'''
+Primary Author: Kent Pawson
+Contributor(s): N/A
+'''
+
 from events import EventChannel
 from views import ModifyPasswordView
 from models import ModifyPasswordModel
 from domain import Password
+from datetime import datetime
 
 class ModifyPasswordController:
     '''
@@ -34,6 +40,7 @@ class ModifyPasswordController:
         self.view = view
         self.model = model
         self.event_system = event_system
+        self.password = None
         self._subscribe()
         self._bind()
 
@@ -44,18 +51,13 @@ class ModifyPasswordController:
         :except No exceptions thrown by this method
         :return None
         '''
-        
-        # Update the password details
-        self.view.var_title.set(password.get_title())
-        self.view.var_url.set(password.get_url())
-        self.view.var_username.set(password.get_username())
-        self.view.var_password.set(password.get_password())
 
-        # self.view.label_selected_title.config(text=f'Title: {password.get_title()}')
-        # self.view.label_selected_url.config(text=f'URL: {password.get_url()}')
-        # self.view.label_selected_username.config(text=f'Username: {password.get_username()}')
-        # self.view.label_selected_password.config(text=f'Password: {password.get_password()}')
-        # self.view.label_selected_date.config(text=f'Date Created: {password.get_created_date()}')
+        # Display the password details 
+        self.password = password
+        self.view.var_title.set(self.password.get_title())
+        self.view.var_url.set(self.password.get_url())
+        self.view.var_username.set(self.password.get_username())
+        self.view.var_password.set(self.password.get_password())
 
         self.view.tkraise()
 
@@ -101,19 +103,20 @@ class ModifyPasswordController:
         return True
 
     def _handle_submit(self):
+        original_title = self.password.get_title()
         title = self.view.var_title.get()
         url = self.view.var_url.get()
         username = self.view.var_username.get()
         _password = self.view.var_password.get()
         current_date = datetime.now().date()
-
+        
         password_flag = self._validate_password(title, url, username, _password)
 
         if not password_flag:
             return
 
         password = Password(title, url, username, _password, current_date)
-        update_flag = self.model._update_password_in_database(password)
+        update_flag = self.model._update_password_in_database(password, original_title)
 
         if not update_flag:
             self.view.show_error_updating_password()
