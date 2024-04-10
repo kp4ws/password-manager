@@ -42,8 +42,6 @@ class HomeView(Frame):
         self.grid_columnconfigure(2, weight=1)
         self.rowconfigure(5, weight=1)
         
-        print("test")
-
         self.var_title = StringVar()
         self.var_url = StringVar()
         self.var_username = StringVar()
@@ -52,11 +50,6 @@ class HomeView(Frame):
 
         self._create_widgets()
 
-    def update_password(self, password):
-        self.var_password.set(f'Password: {password}')
-        print(self.var_password.get())
-        self.update()
-
     def _create_widgets(self) -> None:
         '''
         Create widgets for the view
@@ -64,10 +57,6 @@ class HomeView(Frame):
         :except No exceptions thrown by this method
         :return None
         '''
-
-        print("test2")
-
-        
         font_header = font.Font(family="Helvetica", size=20, weight="bold")
         font_sub_header = font.Font(family="Helvetica", size=16)
 

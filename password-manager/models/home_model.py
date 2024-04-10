@@ -54,6 +54,8 @@ class HomeModel:
 
                 decryption = Decryption(encrypted_pass)
                 decrypted_pass = decryption.apply_cipher()
+                #Remove null characters in decrypted string
+                decrypted_pass = decrypted_pass.replace('\x00', '')
 
                 password = Password(website_title, url, username, decrypted_pass, date_created)
                 self.passwords.append(password)

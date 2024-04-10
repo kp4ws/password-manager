@@ -82,10 +82,8 @@ class HomeController:
         self.view.var_title.set(f'Title: {title}')
         self.view.var_url.set(f'URL: {url}')
         self.view.var_username.set(f'Username: {username}')
-        # self.view.var_password.set(f'Password: {password}')
-        self.view.update_password(password)
+        self.view.var_password.set(f'Password: {password}')
         self.view.var_created_date.set(f'Created Date: {created_date}')
-
         self.view.update()
 
     def _handle_create(self) -> None:
