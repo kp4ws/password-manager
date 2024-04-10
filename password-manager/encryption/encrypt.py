@@ -495,7 +495,6 @@ class Decryption(Tables):
 
         str_value = self.hex_to_str(self.input)
         str_value = str_value.strip('\0')
-        print("string value =", str_value)
         return str_value
 
 
@@ -509,7 +508,4 @@ if __name__ == '__main__':
     the_key_2 = [['2b', '7e', '15', '16'], ['28', 'ae', 'd2', 'a6'], ['ab', 'f7', '15', '88'], ['09', 'cf', '4f', '3c']]
     decrypt_imp = Decryption(encrypted, the_key_2)
     original = decrypt_imp.apply_cipher()
-    for each in original:
-        print(each)
-
     print("Password after decryption:", original)
